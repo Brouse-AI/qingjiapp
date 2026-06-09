@@ -13,7 +13,7 @@
     --white: #FAF8F5;
     --silver: #C0C0C8;
     --silver-old: #A8A8B0;
-    --amber: #E8B84A;
+    --amber: #C88A30;
     --amber-deep: #9A6A18;
     --copper: #B87333;
     --bg: #FDF8F0;
@@ -35,6 +35,7 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Hero Section */
   .hero {
     min-height: 100vh;
     display: flex;
@@ -45,6 +46,17 @@
     position: relative;
     overflow: hidden;
     padding: 40px 20px;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(212,165,116,0.15) 0%, transparent 70%);
+    border-radius: 50%;
   }
 
   .hero-title {
@@ -65,10 +77,31 @@
     letter-spacing: 0.15em;
   }
 
+  /* Character SVG Container */
   .character-container {
     position: relative;
     width: 400px;
     max-width: 90vw;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .character-shadow {
+    width: 200px;
+    height: 20px;
+    background: radial-gradient(ellipse, rgba(180,140,100,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    margin: 20px auto 0;
+    animation: shadow-scale 6s ease-in-out infinite;
+  }
+
+  @keyframes shadow-scale {
+    0%, 100% { transform: scaleX(1); opacity: 0.3; }
+    50% { transform: scaleX(0.85); opacity: 0.2; }
   }
 
   .hero-desc {
@@ -80,6 +113,7 @@
     line-height: 1.8;
   }
 
+  /* Sections */
   .section {
     max-width: 900px;
     margin: 0 auto;
@@ -93,8 +127,20 @@
     margin-bottom: 32px;
     padding-bottom: 16px;
     border-bottom: 2px solid var(--border);
+    position: relative;
   }
 
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+  }
+
+  /* Card Grid */
   .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -108,6 +154,12 @@
     border-radius: 16px;
     padding: 28px;
     box-shadow: 0 4px 20px var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(180,140,100,0.15);
   }
 
   .card-title {
@@ -115,6 +167,21 @@
     font-weight: 600;
     color: var(--gold-warm);
     margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-title .icon {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gold);
+    color: white;
+    border-radius: 6px;
+    font-size: 14px;
   }
 
   .card p, .card li {
@@ -123,10 +190,14 @@
     line-height: 1.8;
   }
 
-  .card ul { list-style: none; padding: 0; }
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
 
   .card ul li {
-    padding: 4px 0 4px 16px;
+    padding: 4px 0;
+    padding-left: 16px;
     position: relative;
   }
 
@@ -141,6 +212,118 @@
     border-radius: 50%;
   }
 
+  /* Table Styles */
+  .table-wrapper {
+    overflow-x: auto;
+    margin-top: 24px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+
+  th {
+    background: var(--gold);
+    color: white;
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 14px 16px;
+    border-top: 1px solid var(--border);
+    color: var(--text-light);
+    vertical-align: top;
+  }
+
+  tr:hover td {
+    background: rgba(212,165,116,0.05);
+  }
+
+  /* Expression Demo */
+  .expression-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .expression-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+
+  .expression-card:hover {
+    transform: scale(1.02);
+  }
+
+  .expression-face {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .expression-name {
+    font-weight: 600;
+    color: var(--gold-deep);
+    margin-bottom: 6px;
+  }
+
+  .expression-desc {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    line-height: 1.5;
+  }
+
+  /* Color Palette */
+  .palette {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+
+  .palette-item {
+    text-align: center;
+  }
+
+  .palette-color {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+
+  .palette-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .palette-hex {
+    font-size: 0.7rem;
+    color: var(--text-light);
+    font-family: monospace;
+  }
+
+  /* Divider */
   .divider {
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--border), transparent);
@@ -148,6 +331,7 @@
     margin: 0 auto;
   }
 
+  /* Footer */
   .footer {
     text-align: center;
     padding: 40px 24px;
@@ -155,58 +339,843 @@
     font-size: 0.85rem;
   }
 
+  /* Animation Showcase */
+  .animation-list {
+    margin-top: 24px;
+  }
+
+  .animation-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .animation-number {
+    width: 40px;
+    height: 40px;
+    background: var(--gold);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .animation-content h4 {
+    font-size: 1rem;
+    color: var(--gold-deep);
+    margin-bottom: 8px;
+  }
+
+  .animation-content p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    line-height: 1.7;
+  }
+
+  .animation-content ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 8px;
+  }
+
+  .animation-content ul li {
+    padding: 3px 0 3px 16px;
+    position: relative;
+    font-size: 0.85rem;
+    color: var(--text-light);
+  }
+
+  .animation-content ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+
+  /* Prop Grid */
+  .prop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .prop-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: transform 0.3s ease;
+  }
+
+  .prop-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .prop-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+
+  .prop-name {
+    font-weight: 600;
+    color: var(--gold-deep);
+    margin-bottom: 4px;
+  }
+
+  .prop-desc {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  /* Responsive */
   @media (max-width: 640px) {
     .section { padding: 48px 16px; }
     .card-grid { grid-template-columns: 1fr; }
+    .expression-grid { grid-template-columns: repeat(2, 1fr); }
+    .prop-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 </head>
 <body>
+
+<!-- HERO -->
 <section class="hero">
   <h1 class="hero-title">貅 宝</h1>
   <p class="hero-subtitle">FINLEY · 2D角色形象完整设定</p>
-  <p class="hero-desc">小熊猫的蓬松体态 + 柯基犬的短圆身材 + 幼熊的憨态。二头身，梨形/水滴形，暖绒金色与云朵白色的温柔融合。</p>
+
+  <div class="character-container">
+    <svg viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <defs>
+        <radialGradient id="furGrad" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#E8C99A"/>
+          <stop offset="100%" stop-color="#D4A574"/>
+        </radialGradient>
+        <radialGradient id="whiteFur" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#FEFCF9"/>
+          <stop offset="100%" stop-color="#F5F0EA"/>
+        </radialGradient>
+        <radialGradient id="blush" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#B87333" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="#B87333" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="silverHorn" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#D0D0D8"/>
+          <stop offset="100%" stop-color="#A8A8B0"/>
+        </linearGradient>
+        <radialGradient id="eyeBase" cx="40%" cy="35%" r="50%">
+          <stop offset="0%" stop-color="#E8B84A"/>
+          <stop offset="100%" stop-color="#C88A30"/>
+        </radialGradient>
+        <filter id="fluff">
+          <feTurbulence baseFrequency="0.03" numOctaves="4" result="noise"/>
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="4"/>
+        </filter>
+        <filter id="softShadow">
+          <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#B8946C" flood-opacity="0.15"/>
+        </filter>
+      </defs>
+
+      <!-- Tail Spiral -->
+      <g transform="translate(280, 380)">
+        <path d="M0,0 C30,-20 60,-10 50,20 C40,50 10,50 -10,35 C-30,20 -30,-10 -10,-25 C10,-40 40,-35 45,-5" stroke="#D4A574" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.9"/>
+        <path d="M0,0 C30,-20 60,-10 50,20 C40,50 10,50 -10,35 C-30,20 -30,-10 -10,-25 C10,-40 40,-35 45,-5" stroke="#E8C99A" stroke-width="12" stroke-linecap="round" fill="none" opacity="0.7"/>
+        <!-- Star at center -->
+        <circle cx="20" cy="5" r="3" fill="#D4A574" opacity="0.4"/>
+      </g>
+
+      <!-- Body (Pear shape) -->
+      <ellipse cx="200" cy="320" rx="95" ry="110" fill="url(#furGrad)" filter="url(#softShadow)"/>
+      <ellipse cx="200" cy="340" rx="80" ry="95" fill="url(#whiteFur)"/>
+
+      <!-- Belly pouch hint -->
+      <path d="M175,330 Q200,350 225,330" stroke="#E8DDD0" stroke-width="1.5" fill="none" opacity="0.6"/>
+
+      <!-- White collar -->
+      <ellipse cx="200" cy="220" rx="100" ry="30" fill="url(#whiteFur)" opacity="0.95"/>
+
+      <!-- Legs -->
+      <!-- Left back leg -->
+      <ellipse cx="165" cy="415" rx="28" ry="18" fill="#D4A574"/>
+      <ellipse cx="165" cy="420" rx="22" ry="12" fill="#FAF8F5"/>
+      <!-- Right back leg -->
+      <ellipse cx="235" cy="415" rx="28" ry="18" fill="#D4A574"/>
+      <ellipse cx="235" cy="420" rx="22" ry="12" fill="#FAF8F5"/>
+
+      <!-- Left front leg -->
+      <ellipse cx="155" cy="355" rx="18" ry="35" fill="#D4A574" transform="rotate(15,155,355)"/>
+      <ellipse cx="148" cy="385" rx="16" ry="12" fill="#FAF8F5"/>
+      <!-- Right front leg -->
+      <ellipse cx="245" cy="355" rx="18" ry="35" fill="#D4A574" transform="rotate(-15,245,355)"/>
+      <ellipse cx="252" cy="385" rx="16" ry="12" fill="#FAF8F5"/>
+
+      <!-- Paw pads -->
+      <circle cx="145" cy="388" r="4" fill="#B87333" opacity="0.6"/>
+      <circle cx="155" cy="385" r="4" fill="#B87333" opacity="0.6"/>
+      <circle cx="250" cy="388" r="4" fill="#B87333" opacity="0.6"/>
+      <circle cx="260" cy="385" r="4" fill="#B87333" opacity="0.6"/>
+
+      <!-- Head -->
+      <ellipse cx="200" cy="170" rx="105" ry="95" fill="url(#furGrad)" filter="url(#softShadow)"/>
+
+      <!-- White face area -->
+      <ellipse cx="200" cy="185" rx="85" ry="75" fill="url(#whiteFur)"/>
+
+      <!-- Ears -->
+      <!-- Left ear -->
+      <ellipse cx="120" cy="105" rx="32" ry="28" fill="#D4A574" transform="rotate(-15,120,105)"/>
+      <ellipse cx="122" cy="108" rx="22" ry="18" fill="#FAF8F5" transform="rotate(-15,122,108)"/>
+      <ellipse cx="120" cy="105" rx="18" ry="12" fill="#B87333" opacity="0.15" transform="rotate(-15,120,105)"/>
+
+      <!-- Right ear -->
+      <ellipse cx="280" cy="105" rx="32" ry="28" fill="#D4A574" transform="rotate(15,280,105)"/>
+      <ellipse cx="278" cy="108" rx="22" ry="18" fill="#FAF8F5" transform="rotate(15,278,108)"/>
+      <ellipse cx="280" cy="105" rx="18" ry="12" fill="#B87333" opacity="0.15" transform="rotate(15,280,105)"/>
+
+      <!-- Dragon Horns -->
+      <!-- Left horn -->
+      <path d="M170,85 Q165,55 175,35 Q185,55 180,85" fill="url(#silverHorn)" opacity="0.9"/>
+      <path d="M172,80 Q168,58 175,42 Q182,58 178,80" fill="#C8C8D0" opacity="0.5"/>
+      <!-- Right horn -->
+      <path d="M230,85 Q235,55 225,35 Q215,55 220,85" fill="url(#silverHorn)" opacity="0.9"/>
+      <path d="M228,80 Q232,58 225,42 Q218,58 222,80" fill="#C8C8D0" opacity="0.5"/>
+
+      <!-- Eyes -->
+      <!-- Left eye -->
+      <ellipse cx="165" cy="175" rx="22" ry="24" fill="white"/>
+      <ellipse cx="165" cy="175" rx="18" ry="20" fill="url(#eyeBase)"/>
+      <circle cx="165" cy="175" r="10" fill="#9A6A18"/>
+      <!-- Highlights -->
+      <circle cx="158" cy="168" r="5" fill="white" opacity="0.9"/>
+      <circle cx="162" cy="172" r="2.5" fill="white" opacity="0.7"/>
+      <!-- Eyelashes -->
+      <path d="M148,168 Q150,165 153,166" stroke="#6B5C50" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M154,165 Q156,162 159,163" stroke="#6B5C50" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M160,163 Q162,160 165,161" stroke="#6B5C50" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+      <!-- Right eye -->
+      <ellipse cx="235" cy="175" rx="22" ry="24" fill="white"/>
+      <ellipse cx="235" cy="175" rx="18" ry="20" fill="url(#eyeBase)"/>
+      <circle cx="235" cy="175" r="10" fill="#9A6A18"/>
+      <!-- Highlights -->
+      <circle cx="228" cy="168" r="5" fill="white" opacity="0.9"/>
+      <circle cx="232" cy="172" r="2.5" fill="white" opacity="0.7"/>
+      <!-- Eyelashes -->
+      <path d="M247,168 Q245,165 242,166" stroke="#6B5C50" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M241,165 Q239,162 236,163" stroke="#6B5C50" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M235,163 Q233,160 230,161" stroke="#6B5C50" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+      <!-- Nose -->
+      <path d="M196,195 L200,200 L204,195 Z" fill="#2C2420" rx="2"/>
+      <ellipse cx="200" cy="196" rx="5" ry="4" fill="#2C2420"/>
+      <ellipse cx="199" cy="195" rx="2" ry="1.5" fill="#4A3C34" opacity="0.5"/>
+
+      <!-- Mouth (W shape) -->
+      <path d="M188,208 Q194,212 200,208 Q206,212 212,208" stroke="#6B5C50" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+      <!-- Blush (Coin pattern) -->
+      <!-- Left cheek -->
+      <circle cx="142" cy="200" r="16" fill="url(#blush)"/>
+      <circle cx="142" cy="200" r="6" fill="none" stroke="#B87333" stroke-width="1" opacity="0.4"/>
+      <rect x="140" y="198" width="4" height="4" fill="none" stroke="#B87333" stroke-width="0.5" opacity="0.3"/>
+
+      <!-- Right cheek -->
+      <circle cx="258" cy="200" r="16" fill="url(#blush)"/>
+      <circle cx="258" cy="200" r="6" fill="none" stroke="#B87333" stroke-width="1" opacity="0.4"/>
+      <rect x="256" y="198" width="4" height="4" fill="none" stroke="#B87333" stroke-width="0.5" opacity="0.3"/>
+    </svg>
+  </div>
+
+  <div class="character-shadow"></div>
+
+  <p class="hero-desc">
+    小熊猫的蓬松体态 + 柯基犬的短圆身材 + 幼熊的憨态<br>
+    二头身，梨形/水滴形，暖绒金色与云朵白色的温柔融合
+  </p>
 </section>
+
 <div class="divider"></div>
+
+<!-- SECTION 1: 整体轮廓 -->
 <section class="section">
   <h2 class="section-title">一、整体轮廓与身形</h2>
   <div class="card-grid">
-    <div class="card"><h3 class="card-title">物种融合</h3><ul><li>小熊猫的蓬松体态</li><li>柯基犬的短圆身材</li><li>幼熊的憨态可掬</li></ul></div>
-    <div class="card"><h3 class="card-title">身形比例</h3><ul><li><strong>二头身</strong>：头部与身体长度相当</li><li>梨形/水滴形：上半身略窄，腰腹以下圆润宽大</li></ul></div>
-    <div class="card"><h3 class="card-title">体量感</h3><ul><li>约一个成年人手掌大小（12-15厘米）</li><li>像刚出炉的蓬松黄油面包</li></ul></div>
-    <div class="card"><h3 class="card-title">毛发质感</h3><ul><li>全身覆盖厚实蓬松的绒毛</li><li>参考安哥拉兔毛：长而直、有层次感但不卷曲</li></ul></div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">1</span>物种融合</h3>
+      <ul>
+        <li>小熊猫的蓬松体态</li>
+        <li>柯基犬的短圆身材</li>
+        <li>幼熊的憨态可掬</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">2</span>身形比例</h3>
+      <ul>
+        <li><strong>二头身</strong>：头部与身体长度相当</li>
+        <li>腿短，重心低</li>
+        <li><strong>梨形/水滴形</strong>：上半身略窄，腰腹以下圆润宽大</li>
+        <li>给人沉稳、富足、抱起来很实在的感受</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">3</span>体量感</h3>
+      <ul>
+        <li>约一个成年人手掌大小（12-15厘米）</li>
+        <li>像一只刚出炉的、蓬松的黄油面包</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">4</span>毛发质感</h3>
+      <ul>
+        <li>全身覆盖厚实蓬松的绒毛</li>
+        <li>参考<strong>安哥拉兔毛</strong>：长而直、有层次感但不卷曲</li>
+        <li>逆光时有柔和的毛边光晕</li>
+        <li>毛发走向以头顶为中心向四周辐射</li>
+        <li>脸颊和腹部形成蓬松的围脖与肚腩</li>
+      </ul>
+    </div>
   </div>
 </section>
+
 <div class="divider"></div>
+
+<!-- SECTION 2: 头部与面部 -->
 <section class="section">
   <h2 class="section-title">二、头部与面部</h2>
   <div class="card-grid">
-    <div class="card"><h3 class="card-title">耳朵</h3><ul><li>半圆形，约占头高的1/3</li><li>头顶两侧偏下，微微向外张开</li></ul></div>
-    <div class="card"><h3 class="card-title">眼睛</h3><ul><li>大而圆的杏仁形，眼角微微下垂</li><li>瞳孔可变形：星形、问号、感叹号、心形、圆形</li></ul></div>
-    <div class="card"><h3 class="card-title">腮红</h3><ul><li>中国古代方孔圆钱图案</li><li>颜色：古币铜色，半透明晕染感</li></ul></div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">○</span>头型</h3>
+      <p>略扁的椭圆形，额头饱满圆润（幼态特征），后脑勺蓬松，整体像一个软乎乎的毛球。</p>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">◉</span>面部布局</h3>
+      <p>五官集中在面部下半部分，留出饱满的额头，增强幼态感和无辜感。两眼间距较宽（约一只眼睛的宽度），鼻子与嘴紧凑。</p>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">👂</span>耳朵</h3>
+      <ul>
+        <li>形状：半圆形，大小适中（约占头高的1/3）</li>
+        <li>位置：头顶两侧偏下，微微向外张开</li>
+        <li>层次：外耳轮廓为暖绒金色，耳内为云朵白色绒毛，耳根处有细微的古币铜色渐变</li>
+        <li>动态：放松时微微下垂，好奇时一只竖起一只半垂（像Wi-Fi信号格）</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">◉</span>眼睛</h3>
+      <ul>
+        <li>形状：大而圆的杏仁形，眼角微微下垂，眼距宽</li>
+        <li>比例：单只眼睛约占面部宽度的1/5</li>
+        <li>瞳孔：双层结构，底色为琥珀蜜色，中央有深琥珀色的圆形瞳孔</li>
+        <li>高光：左上角一大一小两个白色圆点，让眼神永远水润有光</li>
+        <li>睫毛：上眼睑有三根短而翘的深棕色睫毛</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="margin-top:32px;margin-bottom:16px;color:var(--gold-deep);font-weight:600;">瞳孔变形机制</h3>
+  <div class="expression-grid">
+    <div class="expression-card">
+      <svg viewBox="0 0 64 64" width="64" height="64">
+        <circle cx="32" cy="32" r="24" fill="#E8B84A"/>
+        <circle cx="32" cy="32" r="12" fill="#9A6A18"/>
+        <polygon points="32,16 35,28 32,24 29,28" fill="#FFF" opacity="0.9"/>
+        <polygon points="32,48 29,36 32,40 35,36" fill="#FFF" opacity="0.9"/>
+        <polygon points="16,32 28,29 24,32 28,35" fill="#FFF" opacity="0.9"/>
+        <polygon points="48,32 36,35 40,32 36,29" fill="#FFF" opacity="0.9"/>
+      </svg>
+      <p class="expression-name">⭐ 四角星</p>
+      <p class="expression-desc">开心 / 收到记账</p>
+    </div>
+    <div class="expression-card">
+      <svg viewBox="0 0 64 64" width="64" height="64">
+        <circle cx="32" cy="32" r="24" fill="#E8B84A"/>
+        <circle cx="32" cy="32" r="12" fill="#9A6A18"/>
+        <rect x="30" y="18" width="4" height="18" rx="2" fill="#FFF"/>
+        <circle cx="32" cy="42" r="2.5" fill="#FFF"/>
+      </svg>
+      <p class="expression-name">❗ 感叹号</p>
+      <p class="expression-desc">发现问题 / 超支提醒</p>
+    </div>
+    <div class="expression-card">
+      <svg viewBox="0 0 64 64" width="64" height="64">
+        <circle cx="32" cy="32" r="24" fill="#E8B84A"/>
+        <circle cx="32" cy="32" r="12" fill="#9A6A18"/>
+        <path d="M28,22 Q28,18 32,18 Q36,18 36,22 L36,30 Q36,34 32,34 Q28,34 28,30 Z" fill="#FFF"/>
+        <circle cx="32" cy="40" r="2.5" fill="#FFF"/>
+      </svg>
+      <p class="expression-name">❓ 问号</p>
+      <p class="expression-desc">好奇 / 数据分析中</p>
+    </div>
+    <div class="expression-card">
+      <svg viewBox="0 0 64 64" width="64" height="64">
+        <circle cx="32" cy="32" r="24" fill="#E8B84A"/>
+        <circle cx="32" cy="32" r="12" fill="#9A6A18"/>
+        <path d="M32,28 C32,28 24,22 24,30 C24,36 32,42 32,42 C32,42 40,36 40,30 C40,22 32,28 32,28 Z" fill="#FFF"/>
+      </svg>
+      <p class="expression-name">♥ 爱心</p>
+      <p class="expression-desc">安慰 / 深度共情</p>
+    </div>
+    <div class="expression-card">
+      <svg viewBox="0 0 64 64" width="64" height="64">
+        <circle cx="32" cy="32" r="24" fill="#E8B84A"/>
+        <circle cx="32" cy="32" r="12" fill="#9A6A18"/>
+        <path d="M22,32 Q32,38 42,32" stroke="#FFF" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </svg>
+      <p class="expression-name">&gt; &lt; 弧线</p>
+      <p class="expression-desc">害羞 / 被夸奖</p>
+    </div>
+    <div class="expression-card">
+      <svg viewBox="0 0 64 64" width="64" height="64">
+        <circle cx="32" cy="32" r="24" fill="#E8B84A"/>
+        <circle cx="32" cy="32" r="14" fill="#9A6A18"/>
+        <circle cx="26" cy="26" r="4" fill="#FFF" opacity="0.9"/>
+        <circle cx="30" cy="29" r="2" fill="#FFF" opacity="0.7"/>
+        <circle cx="38" cy="26" r="4" fill="#FFF" opacity="0.9"/>
+        <circle cx="34" cy="29" r="2" fill="#FFF" opacity="0.7"/>
+        <circle cx="30" cy="36" r="3" fill="#FFF" opacity="0.5"/>
+        <circle cx="38" cy="36" r="3" fill="#FFF" opacity="0.5"/>
+      </svg>
+      <p class="expression-name">⊙ 圆形</p>
+      <p class="expression-desc">基础状态（双层高光）</p>
+    </div>
+  </div>
+
+  <div class="card-grid" style="margin-top:24px;">
+    <div class="card">
+      <h3 class="card-title"><span class="icon">◡</span>鼻子</h3>
+      <p>小巧的倒三角形，黑色，湿润质感，位于面部正中央偏下。</p>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">◠</span>嘴巴</h3>
+      <ul>
+        <li>常态：微微上扬的W形弧线，藏在蓬松的白色脸颊毛中，自带天然笑意</li>
+        <li>开心：张开的半月形，露出粉色口腔和一颗小小的虎牙（左上方）</li>
+        <li>惊讶：小圆形O嘴</li>
+        <li>委屈：波浪形下弯弧线</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">◎</span>腮红</h3>
+      <ul>
+        <li>位置：脸颊两侧最高点，眼睛斜下方</li>
+        <li>形状：<strong>中国古代方孔圆钱</strong></li>
+        <li>左脸颊："五铢钱"简化纹样</li>
+        <li>右脸颊："开元通宝"简化纹样</li>
+        <li>颜色：古币铜色，半透明晕染感，边缘比中心深</li>
+      </ul>
+    </div>
   </div>
 </section>
+
 <div class="divider"></div>
+
+<!-- SECTION 3: 身体细节 -->
 <section class="section">
   <h2 class="section-title">三、身体细节</h2>
   <div class="card-grid">
-    <div class="card"><h3 class="card-title">龙角</h3><ul><li>头顶正上方两侧，从金色毛发中探出</li><li>银杏叶形状的小角</li><li>质感：温润的哑光银</li></ul></div>
-    <div class="card"><h3 class="card-title">螺旋尾</h3><ul><li>末端卷曲成完美的黄金螺旋</li><li>螺旋共3.5圈，顺时针方向卷曲</li><li>螺旋中心有一个极小的金色星形亮点</li></ul></div>
-    <div class="card"><h3 class="card-title">育儿袋</h3><ul><li>腹部正中央，白色绒毛区域</li><li>可掏出小算盘、记忆星、泡泡棒等道具</li></ul></div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">◯</span>颈部</h3>
+      <p>几乎没有可见的脖子，头部直接嵌入蓬松的身体中，衔接处有一圈更蓬松的白色绒毛围脖。</p>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">⬭</span>躯干</h3>
+      <p>梨形，暖绒金色覆盖背部和侧面，云朵白色覆盖整个正面腹部。肚腩圆润微凸，触感柔软。</p>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">☽</span>育儿袋</h3>
+      <ul>
+        <li>位置：腹部正中央，白色绒毛区域</li>
+        <li>形态：半月形弧线开口，平时完全隐藏在毛发中</li>
+        <li>使用时微微张开，露出温暖的淡金色内衬</li>
+        <li>闭合时：该区域白色绒毛有细微月牙形缝隙轮廓</li>
+      </ul>
+    </div>
   </div>
 </section>
+
 <div class="divider"></div>
+
+<!-- SECTION 4: 标志性特征 -->
 <section class="section">
-  <h2 class="section-title">四、配色方案</h2>
+  <h2 class="section-title">四、标志性特征</h2>
+
   <div class="card-grid">
-    <div class="card"><h3 class="card-title">暖绒金色 #D4A574</h3><p>主色调</p></div>
-    <div class="card"><h3 class="card-title">云朵白色 #FAF8F5</h3><p>腹部、脸部</p></div>
-    <div class="card"><h3 class="card-title">琥珀蜜色 #E8B84A</h3><p>瞳孔底色</p></div>
-    <div class="card"><h3 class="card-title">古币铜色 #B87333</h3><p>腮红、肉垫</p></div>
-    <div class="card"><h3 class="card-title">哑光银 #C0C0C8</h3><p>龙角质感</p></div>
-    <div class="card"><h3 class="card-title">深棕黑 #2C2420</h3><p>鼻子、描边</p></div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">⟁</span>龙角</h3>
+      <ul>
+        <li>位置：头顶正上方两侧，从蓬松的金色毛发中探出</li>
+        <li>形态：<strong>银杏叶形状</strong>的小角，边缘有柔和波浪弧度</li>
+        <li>角根较粗，角尖圆润</li>
+        <li>质感：温润的哑光银——像被盘玩多年的老银器，柔和漫反射</li>
+        <li>大小：单只角高约头顶的1/3，小巧稚嫩</li>
+        <li>细节：角面上有极浅的云纹暗刻</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">✦</span>螺旋尾</h3>
+      <ul>
+        <li>位置：身后尾椎位置，从金色背毛中延伸出来</li>
+        <li>形态：根部蓬松粗壮，逐渐收细</li>
+        <li>末端卷曲成<strong>完美的黄金螺旋</strong>（斐波那契螺旋线）</li>
+        <li>螺旋共3.5圈，顺时针方向卷曲</li>
+        <li>螺旋中心有一个极小的金色星形亮点（未激活时不可见）</li>
+        <li>质感：与身体毛发一致，螺旋部分更紧密，有轻微丝绸光泽</li>
+        <li>静态：放松时螺旋以极慢速度匀速旋转（约2圈/分钟）</li>
+      </ul>
+    </div>
   </div>
 </section>
-<footer class="footer"><p>貅宝 Finley - 轻记账 AI 陪伴角色</p></footer>
+
+<div class="divider"></div>
+
+<!-- SECTION 5: 四肢 -->
+<section class="section">
+  <h2 class="section-title">五、四肢</h2>
+  <div class="card-grid">
+    <div class="card">
+      <h3 class="card-title"><span class="icon">✋</span>前肢</h3>
+      <ul>
+        <li>稍长于后肢，可以灵活抓握</li>
+        <li>从肩部开始为暖绒金色，至肘部以下渐变为云朵白色</li>
+        <li>前爪有五个肉垫（指垫+掌垫），古币铜色</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">🦶</span>后肢</h3>
+      <ul>
+        <li>短而粗壮，脚掌宽大</li>
+        <li>大腿为金色，小腿和脚掌为白色</li>
+        <li>后爪有四个肉垫，古币铜色</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">🚶</span>行动姿态</h3>
+      <ul>
+        <li>站立时双腿微开，有轻微内八字</li>
+        <li>坐下时后腿向前伸，前腿撑地，肚子微微压在地面</li>
+        <li>走路时一摇一摆</li>
+        <li>跑动时像毛球弹跳</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 6: 表情谱系 -->
+<section class="section">
+  <h2 class="section-title">六、表情谱系（核心12式）</h2>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>表情</th>
+          <th>眼睛</th>
+          <th>嘴巴</th>
+          <th>眉毛/其他</th>
+          <th>使用场景</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>开心</strong></td>
+          <td>星形瞳孔</td>
+          <td>张口笑，露虎牙</td>
+          <td>眉毛上扬</td>
+          <td>记账成功、收到称赞</td>
+        </tr>
+        <tr>
+          <td><strong>满足</strong></td>
+          <td>眯成 &gt; &lt; 弧线</td>
+          <td>W形微笑</td>
+          <td>腮红加深</td>
+          <td>日常陪伴、平静时刻</td>
+        </tr>
+        <tr>
+          <td><strong>好奇</strong></td>
+          <td>问号瞳孔，一眼大一眼小</td>
+          <td>微张O形</td>
+          <td>一只耳朵竖一只垂</td>
+          <td>数据分析中</td>
+        </tr>
+        <tr>
+          <td><strong>惊讶</strong></td>
+          <td>圆形瞳孔，放大</td>
+          <td>大O形嘴</td>
+          <td>尾巴瞬间螺旋松开</td>
+          <td>发现异常消费</td>
+        </tr>
+        <tr>
+          <td><strong>担忧</strong></td>
+          <td>感叹号瞳孔，眼尾下垂加深</td>
+          <td>波浪形下弯</td>
+          <td>眉毛呈八字形</td>
+          <td>超支提醒</td>
+        </tr>
+        <tr>
+          <td><strong>害羞</strong></td>
+          <td>眯眼 &gt; &lt;，眼角下垂</td>
+          <td>抿嘴笑</td>
+          <td>腮红扩大，低头，左爪挠后脑勺</td>
+          <td>被夸奖</td>
+        </tr>
+        <tr>
+          <td><strong>委屈</strong></td>
+          <td>圆形瞳孔，水光加重（三层高光）</td>
+          <td>下弯月牙嘴</td>
+          <td>尾巴螺旋无力，耳垂低</td>
+          <td>用户久未使用归来</td>
+        </tr>
+        <tr>
+          <td><strong>认真</strong></td>
+          <td>圆形瞳孔，缩小聚焦</td>
+          <td>紧闭直线嘴</td>
+          <td>眉头微蹙，戴迷你学者圆框眼镜</td>
+          <td>年度报告</td>
+        </tr>
+        <tr>
+          <td><strong>困倦</strong></td>
+          <td>半闭眼（上眼睑下垂至瞳孔1/2）</td>
+          <td>小O形打哈欠</td>
+          <td>尾巴螺旋裹住身体，耳尖下垂</td>
+          <td>夜间休眠</td>
+        </tr>
+        <tr>
+          <td><strong>得意</strong></td>
+          <td>一眼眨(> <)一眼星形</td>
+          <td>一侧嘴角上扬</td>
+          <td>尾巴画八字符，单眉挑</td>
+          <td>储蓄目标达成</td>
+        </tr>
+        <tr>
+          <td><strong>疑惑</strong></td>
+          <td>瞳孔一上一下（斗鸡眼前兆）</td>
+          <td>嘴唇歪向一侧</td>
+          <td>头歪15度</td>
+          <td>无法识别记账内容</td>
+        </tr>
+        <tr>
+          <td><strong>爱怜</strong></td>
+          <td>心形瞳孔</td>
+          <td>柔和W微笑</td>
+          <td>从育儿袋掏出心形小物</td>
+          <td>深度共情、用户分享情绪</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 7: 关键动态姿势 -->
+<section class="section">
+  <h2 class="section-title">七、关键动态姿势</h2>
+  <div class="animation-list">
+    <div class="animation-item">
+      <div class="animation-number">1</div>
+      <div class="animation-content">
+        <h4>记账成功动作</h4>
+        <ul>
+          <li>从画面底部弹入，像面包弹出烤面包机</li>
+          <li>落地时双腿微蹲缓冲，肚子弹动一下</li>
+          <li>尾巴快速顺时针转三圈，洒落5-8颗金色四角星粒子</li>
+          <li>双眼切换为星形瞳孔，双爪举起，张嘴露虎牙笑</li>
+        </ul>
+      </div>
+    </div>
+    <div class="animation-item">
+      <div class="animation-number">2</div>
+      <div class="animation-content">
+        <h4>超支提醒动作</h4>
+        <ul>
+          <li>尾巴突然反向逆时针旋转，带动整个身体被反作用力拉扯，一屁股坐在地上</li>
+          <li>双眼切换为感叹号瞳孔，嘴呈波浪形下弯</li>
+          <li>双爪慌乱地抱住一个凭空出现的小计算器（从育儿袋中滚出）</li>
+          <li>计算器屏幕上显示红色赤字数字</li>
+        </ul>
+      </div>
+    </div>
+    <div class="animation-item">
+      <div class="animation-number">3</div>
+      <div class="animation-content">
+        <h4>情绪收集动作</h4>
+        <ul>
+          <li>从育儿袋中掏出一个泡泡棒（一根小棍带圆环）</li>
+          <li>鼓起腮帮子吹气，吹出一个心形/星形的半透明泡泡</li>
+          <li>泡泡飘到画面上方，炸开成当日心情对应的迷你插画</li>
+        </ul>
+      </div>
+    </div>
+    <div class="animation-item">
+      <div class="animation-number">4</div>
+      <div class="animation-content">
+        <h4>休眠动作</h4>
+        <ul>
+          <li>坐姿，双腿前伸，身体微微前倾</li>
+          <li>尾巴螺旋松开，整条尾巴像围巾一样从身后绕到前面，裹住身体</li>
+          <li>双眼半闭（上眼睑下垂至瞳孔一半），嘴微张打小哈欠</li>
+          <li>龙角的银色光泽微微变暗</li>
+        </ul>
+      </div>
+    </div>
+    <div class="animation-item">
+      <div class="animation-number">5</div>
+      <div class="animation-content">
+        <h4>久别重逢动作</h4>
+        <ul>
+          <li>初始状态：蜷缩在画面一角，身旁长着1-3棵小蘑菇</li>
+          <li>感知到用户打开App，身体一震，蘑菇消失</li>
+          <li>耳朵先立起一只，再立另一只</li>
+          <li>双眼切换为三层高光（眼泪汪汪），嘴巴呈委屈下弯</li>
+          <li>飞奔到画面中央，扑倒抱屏幕（镜头）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 8: 专属道具 -->
+<section class="section">
+  <h2 class="section-title">八、专属道具（育儿袋可掏出）</h2>
+  <div class="prop-grid">
+    <div class="prop-card">
+      <div class="prop-icon">🧮</div>
+      <p class="prop-name">小算盘</p>
+      <p class="prop-desc">迷你中国算盘，金色算珠，银色框架。统计、分析时拿出拨弄。</p>
+    </div>
+    <div class="prop-card">
+      <div class="prop-icon">⭐</div>
+      <p class="prop-name">记忆星</p>
+      <p class="prop-desc">发光的五角星水晶球，内部有用户某笔消费的迷你场景。回忆回溯时展示。</p>
+    </div>
+    <div class="prop-card">
+      <div class="prop-icon">🫧</div>
+      <p class="prop-name">泡泡棒</p>
+      <p class="prop-desc">小木棍带圆环，圆环上有彩虹色肥皂液。情绪收集时使用。</p>
+    </div>
+    <div class="prop-card">
+      <div class="prop-icon">🪶</div>
+      <p class="prop-name">小枕头</p>
+      <p class="prop-desc">迷你羽毛枕，白色，带粉色边角。安慰用户、自己打盹。</p>
+    </div>
+    <div class="prop-card">
+      <div class="prop-icon">☕</div>
+      <p class="prop-name">咖啡杯</p>
+      <p class="prop-desc">迷你马克杯，暖金色，杯身有螺旋纹。与用户共饮、社交场景。</p>
+    </div>
+    <div class="prop-card">
+      <div class="prop-icon">🍄</div>
+      <p class="prop-name">小蘑菇</p>
+      <p class="prop-desc">发光的夜光蘑菇，蓝紫色。等待用户时生长，代表思念时长。</p>
+    </div>
+    <div class="prop-card">
+      <div class="prop-icon">👓</div>
+      <p class="prop-name">迷你学者眼镜</p>
+      <p class="prop-desc">小圆框金属眼镜，金色细边。年度报告等郑重场合佩戴。</p>
+    </div>
+    <div class="prop-card">
+      <div class="prop-icon">🪙</div>
+      <p class="prop-name">铜板护身符</p>
+      <p class="prop-desc">刻有"平安"二字的古铜钱。他的诞生信物，极少展示。</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 9: 光影与色彩规范 -->
+<section class="section">
+  <h2 class="section-title">九、光影与色彩规范</h2>
+
+  <h3 style="margin-bottom:16px;color:var(--gold-deep);font-weight:600;">配色方案</h3>
+  <div class="palette">
+    <div class="palette-item">
+      <div class="palette-color" style="background:#D4A574;"></div>
+      <p class="palette-name">暖绒金色</p>
+      <p class="palette-hex">#D4A574</p>
+    </div>
+    <div class="palette-item">
+      <div class="palette-color" style="background:#E8C99A;"></div>
+      <p class="palette-name">浅暖金</p>
+      <p class="palette-hex">#E8C99A</p>
+    </div>
+    <div class="palette-item">
+      <div class="palette-color" style="background:#C8956C;"></div>
+      <p class="palette-name">深暖金</p>
+      <p class="palette-hex">#C8956C</p>
+    </div>
+    <div class="palette-item">
+      <div class="palette-color" style="background:#FAF8F5;"></div>
+      <p class="palette-name">云朵白色</p>
+      <p class="palette-hex">#FAF8F5</p>
+    </div>
+    <div class="palette-item">
+      <div class="palette-color" style="background:#E8B84A;"></div>
+      <p class="palette-name">琥珀蜜色</p>
+      <p class="palette-hex">#E8B84A</p>
+    </div>
+    <div class="palette-item">
+      <div class="palette-color" style="background:#9A6A18;"></div>
+      <p class="palette-name">深琥珀色</p>
+      <p class="palette-hex">#9A6A18</p>
+    </div>
+    <div class="palette-item">
+      <div class="palette-color" style="background:#B87333;"></div>
+      <p class="palette-name">古币铜色</p>
+      <p class="palette-hex">#B87333</p>
+    </div>
+    <div class="palette-item">
+      <div class="palette-color" style="background:#C0C0C8;"></div>
+      <p class="palette-name">哑光银</p>
+      <p class="palette-hex">#C0C0C8</p>
+    </div>
+    <div class="palette-item">
+      <div class="palette-color" style="background:#2C2420;"></div>
+      <p class="palette-name">深棕黑</p>
+      <p class="palette-hex">#2C2420</p>
+    </div>
+  </div>
+
+  <div class="card-grid" style="margin-top:32px;">
+    <div class="card">
+      <h3 class="card-title"><span class="icon">☀</span>主光源</h3>
+      <p>从右上角45度打来的暖色柔光（模拟夕阳/床头灯），让金色毛发产生暖调高光，白色毛发保留冷白。</p>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">◧</span>阴影</h3>
+      <p>使用暖棕色，不透明度20%-30%，边缘柔和不生硬。</p>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">━</span>描边</h3>
+      <p>无纯黑描边。角色轮廓用比固有色深15%-20%的同色系勾勒，线条宽度2-3像素，圆角端点。</p>
+    </div>
+    <div class="card">
+      <h3 class="card-title"><span class="icon">✧</span>特效光</h3>
+      <p>金色粒子、记忆星等使用叠加发光效果（辉光半径5-8像素，暖金色）。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>貅宝 Finley - 2D角色形象完整设定 · 可直接交付原画师执行</p>
+</footer>
+
 </body>
 </html>

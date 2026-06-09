@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>貅宝 - IP形象展示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #F5F0E8 0%, #E8E0D0 50%, #F0E8D8 100%);
+            font-family: 'Noto Sans SC', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            padding: 40px 20px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #C9A86C;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #8B7D6B;
+            font-size: 1rem;
+            margin-bottom: 40px;
+        }
+
+        .character-display {
+            position: relative;
+            width: 400px;
+            height: 500px;
+            margin: 0 auto 40px;
+        }
+
+        .xiubao {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            animation: gentle-bounce 3s ease-in-out infinite;
+            cursor: pointer;
+        }
+
+        @keyframes gentle-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .xiubao:hover {
+            animation-duration: 2s;
+        }
+
+        /* Tail */
+        .body-container {
+            position: absolute;
+            width: 280px;
+            height: 320px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Tail */
+        .tail-container {
+            position: absolute;
+            right: -30px;
+            top: 60%;
+            width: 120px;
+            height: 120px;
+        }
+
+        .tail-spiral {
+            animation: tail-spin 30s linear infinite;
+            transform-origin: 140px 290px;
+        }
+
+        @keyframes tail-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes tail-reverse {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+
+        @keyframes tail-exclaim {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.5) rotate(180deg) translateY(-30px); }
+            100% { transform: scale(1) rotate(360deg) translateY(0); }
+        }
+
+        /* Golden particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #C9A86C;
+            border-radius: 50%;
+            animation: particle-fall 2s ease-out forwards;
+        }
+
+        @keyframes particle-fall {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(40px) scale(0.5); }
+        }
+
+        /* Dragon horns */
+        .horn {
+            position: absolute;
+            top: -15px;
+            width: 30px;
+            height: 40px;
+        }
+
+        .horn-left { left: 25%; }
+        .horn-right { right: 25%; }
+
+        .horn-shape {
+            fill: #C0C0C0;
+            stroke: #A0A0A0;
+            stroke-width: 1;
+        }
+
+        /* Face */
+        .face {
+            position: absolute;
+            left: 50%;
+            top: 35%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 160px;
+        }
+
+        /* Eyes */
+        .eye {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            background: #F5E6D0;
+            border-radius: 50%;
+            top: 40px;
+            overflow: hidden;
+        }
+
+        .eye-left { left: 30px; }
+        .eye-right { right: 30px; }
+
+        .pupil {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            background: #C9A86C;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+
+        .pupil-highlight {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .highlight-big {
+            width: 12px;
+            height: 12px;
+            top: 5px;
+            left: 5px;
+        }
+
+        .highlight-small {
+            width: 6px;
+            height: 6px;
+            bottom: 8px;
+            right: 8px;
+        }
+
+        /* Pupil shapes */
+        .pupil.star {
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        .pupil.exclamation {
+            clip-path: polygon(35% 10%, 65% 10%, 65% 65%, 65% 100%, 50% 85%, 35% 100%, 35% 65%);
+        }
+
+        .pupil.question {
+            clip-path: polygon(20% 20%, 80% 20%, 80% 45%, 60% 45%, 60% 55%, 70% 55%, 70% 80%, 30% 80%, 30% 70%, 50% 70%, 50% 45%, 20% 45%);
+        }
+
+        .pupil.heart {
+            clip-path: path('M 50% 85% C 50% 85%, 15% 60%, 15% 35%, 30% 20%, 50% 35%, 70% 20%, 85% 35%, 85% 60%, 50% 85%');
+        }
+
+        /* Nose */
+        .nose {
+            position: absolute;
+            width: 20px;
+            height: 15px;
+            background: #2D2D2D;
+            border-radius: 50% 50% 30% 30%;
+            left: 50%;
+            top: 75px;
+            transform: translateX(-50%);
+        }
+
+        /* Mouth - W shape */
+        .mouth {
+            position: absolute;
+            width: 40px;
+            height: 15px;
+            left: 50%;
+            top: 90px;
+            transform: translateX(-50%);
+        }
+
+        .mouth-path {
+            fill: none;
+            stroke: #8B6B5A;
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+
+        /* Cheeks */
+        .cheek {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            top: 70px;
+            opacity: 0.6;
+        }
+
+        .cheek-left { left: 10px; }
+        .cheek-right { right: 10px; }
+
+        .cheek-shape {
+            fill: #C9A86C;
+        }
+
+        /* Ears */
+        .ear {
+            position: absolute;
+            width: 50px;
+            height: 45px;
+            top: -5px;
+        }
+
+        .ear-left { left: 15px; }
+        .ear-right { right: 15px; }
+
+        .ear-outer {
+            fill: #C9A86C;
+        }
+
+        .ear-inner {
+            fill: #C9A86C;
+            opacity: 0.8;
+        }
+
+        /* Arms */
+        .arm {
+            position: absolute;
+            width: 40px;
+            height: 60px;
+            top: 55%;
+        }
+
+        .arm-left {
+            left: 10%;
+            transform: rotate(15deg);
+        }
+
+        .arm-right {
+            right: 10%;
+            transform: rotate(-15deg);
+        }
+
+        .arm-shape {
+            fill: #F5E6D0;
+        }
+
+        .paw-pad {
+            fill: #C9A86C;
+        }
+
+        /* Legs */
+        .leg {
+            position: absolute;
+            width: 45px;
+            height: 35px;
+            bottom: 15%;
+        }
+
+        .leg-left { left: 30%; }
+        .leg-right { right: 30%; }
+
+        .leg-shape {
+            fill: #F5E6D0;
+        }
+
+        /* Belly pouch */
+        .pouch {
+            position: absolute;
+            left: 50%;
+            bottom: 25%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 40px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .pouch.visible {
+            opacity: 1;
+        }
+
+        .pouch-opening {
+            fill: #F5E6D0;
+            stroke: #C9A86C;
+            stroke-width: 1;
+        }
+
+        .pouch-lining {
+            fill: #FFD700;
+            opacity: 0.3;
+        }
+
+        /* Interactive controls */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #C9A86C 0%, #B89450 100%);
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Info cards */
+        .info-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .info-card {
+            background: rgba(255,255,255,0.8);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        .info-card h3 {
+            color: #C9A86C;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .info-card p {
+            color: #6B6B6B;
+            line-height: 1.8;
+            font-size: 0.9rem;
+        }
+
+        /* Color palette */
+        .color-palette {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .color-swatch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .swatch {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .swatch-label {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #6B6B6B;
+        }
+
+        /* Mood indicator */
+        .mood-indicator {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #8B7D6B;
+            margin: 20px 0;
+            min-height: 30px;
+        }
+
+        /* SVG styling */
+        .xiubao-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Floating animation for particles container */
+        .particles-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* Story timeline */
+        .story-section {
+            margin-top: 40px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        .story-section h2 {
+            text-align: center;
+            color: #C9A86C;
+            margin-bottom: 25px;
+        }
+
+        .story-item {
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 3px solid #C9A86C;
+        }
+
+        .story-item h4 {
+            color: #8B7D6B;
+            margin-bottom: 8px;
+        }
+
+        .story-item p {
+            color: #6B6B6B;
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .character-display {
+                width: 300px;
+                height: 400px;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">貅宝</h1>
+        <p class="subtitle">昆仑墟的记账小神兽</p>
+
+        <!-- Character Display -->
+        <div class="character-display">
+            <div class="particles-container" id="particles"></div>
+            
+            <svg class="xiubao-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <!-- Fur texture gradient -->
+                    <radialGradient id="bodyGradient" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#E8D8B8"/>
+                        <stop offset="100%" stop-color="#C9A86C"/>
+                    </radialGradient>
+                    
+                    <!-- Eye gradient -->
+                    <radialGradient id="eyeGradient" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#F5E6D0"/>
+                        <stop offset="100%" stop-color="#E8D8B8"/>
+                    </radialGradient>
+                    
+                    <!-- Pupil gradient -->
+                    <radialGradient id="pupilGradient" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#D4B878"/>
+                        <stop offset="100%" stop-color="#C9A86C"/>
+                    </radialGradient>
+                    
+                    <!-- Horn gradient -->
+                    <linearGradient id="hornGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#E0E0E0"/>
+                        <stop offset="100%" stop-color="#B0B0B0"/>
+                    </linearGradient>
+                    
+                    <!-- Pouch lining gradient -->
+                    <linearGradient id="pouchGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#FFD700"/>
+                        <stop offset="100%" stop-color="#FFA500"/>
+                    </linearGradient>
+                    
+                    <!-- Filter for soft fur glow -->
+                    <filter id="softGlow">
+                        <feGaussianBlur stdDeviation="2" result="glow"/>
+                        <feComposite in="SourceGraphic" in2="glow" operator="over"/>
+                    </filter>
+                    
+                    <!-- Filter for depth -->
+                    <filter id="dropShadow">
+                        <feDropShadow dx="0" dy="5" stdDeviation="8" flood-opacity="0.15"/>
+                    </filter>
+                    
+                    <!-- Breathing animation -->
+                    <animate id="breathAnim" attributeName="ry" values="110;115;110" dur="3s" repeatCount="indefinite"/>
+                </defs>
+                
+                <!-- DRAGON HORNS (larger, more prominent ginkgo leaf shape) -->
+                <g id="horns" filter="url(#softGlow)">
+                    <!-- Left horn - much larger ginkgo leaf -->
+                    <path d="M 115 135 C 95 105, 75 65, 65 40 C 55 15, 70 8, 85 18 C 100 28, 110 50, 108 75 C 105 100, 120 120, 130 130" 
+                          fill="url(#hornGradient)" opacity="0.95"/>
+                    <!-- Horn inner highlight -->
+                    <path d="M 105 120 C 90 95, 75 60, 68 40 C 62 22, 72 18, 82 24 C 92 30, 100 48, 102 70 C 104 90, 112 108, 120 120" 
+                          fill="url(#hornGradient)" opacity="0.4"/>
+                    <!-- Horn wave details (subtle ridges) -->
+                    <path d="M 85 70 C 78 62, 80 52, 88 48" fill="none" stroke="#909090" stroke-width="1.5" opacity="0.4"/>
+                    <path d="M 95 45 C 88 38, 90 28, 98 25" fill="none" stroke="#909090" stroke-width="1.5" opacity="0.4"/>
+                    <path d="M 80 90 C 73 82, 75 74, 82 70" fill="none" stroke="#909090" stroke-width="1" opacity="0.3"/>
+                    <!-- Horn base fluff -->
+                    <circle cx="122" cy="125" r="8" fill="#E8D8B8" opacity="0.85"/>
+                    <circle cx="112" cy="118" r="7" fill="#E8D8B8" opacity="0.75"/>
+                    <circle cx="128" cy="115" r="6" fill="#F5E6D0" opacity="0.6"/>
+                    
+                    <!-- Right horn - much larger ginkgo leaf -->
+                    <path d="M 225 135 C 245 105, 265 65, 275 40 C 285 15, 270 8, 255 18 C 240 28, 230 50, 232 75 C 235 100, 220 120, 210 130" 
+                          fill="url(#hornGradient)" opacity="0.95"/>
+                    <!-- Horn inner highlight -->
+                    <path d="M 235 120 C 250 95, 265 60, 272 40 C 278 22, 268 18, 258 24 C 248 30, 240 48, 238 70 C 236 90, 228 108, 220 120" 
+                          fill="url(#hornGradient)" opacity="0.4"/>
+                    <!-- Horn wave details -->
+                    <path d="M 255 70 C 262 62, 260 52, 252 48" fill="none" stroke="#909090" stroke-width="1.5" opacity="0.4"/>
+                    <path d="M 245 45 C 252 38, 250 28, 242 25" fill="none" stroke="#909090" stroke-width="1.5" opacity="0.4"/>
+                    <path d="M 260 90 C 267 82, 265 74, 258 70" fill="none" stroke="#909090" stroke-width="1" opacity="0.3"/>
+                    <!-- Horn base fluff -->
+                    <circle cx="218" cy="125" r="8" fill="#E8D8B8" opacity="0.85"/>
+                    <circle cx="228" cy="118" r="7" fill="#E8D8B8" opacity="0.75"/>
+                    <circle cx="212" cy="115" r="6" fill="#F5E6D0" opacity="0.6"/>
+                </g>
+                
+                <!-- TAIL (behind body - MORE VISIBLE spiral with 3.5 loops) -->
+                <g id="tail" class="tail-spiral" filter="url(#dropShadow)">
+                    <!-- Main spiral path - thicker and more distinct -->
+                    <path d="M 280 290 
+                             C 330 260, 380 280, 390 320 
+                             C 400 360, 370 400, 330 410 
+                             C 290 420, 250 395, 240 360 
+                             C 230 325, 260 300, 290 295 
+                             C 320 290, 340 305, 345 325 
+                             C 350 345, 330 360, 310 355" 
+                          fill="none" stroke="#C9A86C" stroke-width="28" stroke-linecap="round" opacity="0.95"/>
+                    <!-- Tail core (lighter inner) -->
+                    <path d="M 280 290 
+                             C 330 260, 380 280, 390 320 
+                             C 400 360, 370 400, 330 410 
+                             C 290 420, 250 395, 240 360 
+                             C 230 325, 260 300, 290 295 
+                             C 320 290, 340 305, 345 325 
+                             C 350 345, 330 360, 310 355" 
+                          fill="none" stroke="#E8D8B8" stroke-width="16" stroke-linecap="round" opacity="0.6"/>
+                    <!-- Tail tip fluff cluster -->
+                    <circle cx="310" cy="355" r="20" fill="#F5E6D0" opacity="0.95"/>
+                    <circle cx="295" cy="340" r="15" fill="#F5E6D0" opacity="0.85"/>
+                    <circle cx="325" cy="365" r="13" fill="#F5E6D0" opacity="0.75"/>
+                    <circle cx="305" cy="370" r="11" fill="#E8D8B8" opacity="0.6"/>
+                    <circle cx="320" cy="345" r="9" fill="#E8D8B8" opacity="0.5"/>
+                </g>
+                
+                <!-- LEGS -->
+                <g id="legs" filter="url(#dropShadow)">
+                    <!-- Left leg (short, wide stance, slight inward angle) -->
+                    <ellipse cx="120" cy="390" rx="40" ry="30" fill="#F5E6D0"/>
+                    <ellipse cx="115" cy="405" rx="28" ry="15" fill="#F5E6D0"/>
+                    <!-- Left paw pads -->
+                    <ellipse cx="105" cy="410" rx="8" ry="5" fill="#C9A86C" opacity="0.7"/>
+                    <ellipse cx="125" cy="410" rx="8" ry="5" fill="#C9A86C" opacity="0.7"/>
+                    
+                    <!-- Right leg (short, wide stance, slight inward angle) -->
+                    <ellipse cx="220" cy="390" rx="40" ry="30" fill="#F5E6D0"/>
+                    <ellipse cx="225" cy="405" rx="28" ry="15" fill="#F5E6D0"/>
+                    <!-- Right paw pads -->
+                    <ellipse cx="215" cy="410" rx="8" ry="5" fill="#C9A86C" opacity="0.7"/>
+                    <ellipse cx="235" cy="410" rx="8" ry="5" fill="#C9A86C" opacity="0.7"/>
+                </g>
+                
+                <!-- BODY (pear shape - VERY FLUFFY with multiple fur layers) -->
+                <g id="body" filter="url(#dropShadow)">
+                    <!-- Outer fur halo (soft glow effect) -->
+                    <ellipse cx="170" cy="295" rx="115" ry="135" fill="#E8D8B8" opacity="0.3">
+                        <animate attributeName="ry" values="135;140;135" dur="3s" repeatCount="indefinite"/>
+                    </ellipse>
+                    
+                    <!-- Main body - pear/water drop shape -->
+                    <ellipse cx="170" cy="295" rx="105" ry="128" fill="url(#bodyGradient)">
+                        <animate attributeName="ry" values="128;133;128" dur="3s" repeatCount="indefinite"/>
+                    </ellipse>
+                    
+                    <!-- Fur layer 1 - fluffy edge circles all around -->
+                    <!-- Left side fluff -->
+                    <circle cx="75" cy="270" r="15" fill="#E8D8B8" opacity="0.7"/>
+                    <circle cx="68" cy="285" r="12" fill="#F5E6D0" opacity="0.6"/>
+                    <circle cx="72" cy="300" r="14" fill="#E8D8B8" opacity="0.65"/>
+                    <circle cx="65" cy="315" r="11" fill="#F5E6D0" opacity="0.55"/>
+                    <circle cx="70" cy="330" r="13" fill="#E8D8B8" opacity="0.6"/>
+                    <circle cx="78" cy="345" r="10" fill="#F5E6D0" opacity="0.5"/>
+                    
+                    <!-- Right side fluff -->
+                    <circle cx="265" cy="270" r="15" fill="#E8D8B8" opacity="0.7"/>
+                    <circle cx="272" cy="285" r="12" fill="#F5E6D0" opacity="0.6"/>
+                    <circle cx="268" cy="300" r="14" fill="#E8D8B8" opacity="0.65"/>
+                    <circle cx="275" cy="315" r="11" fill="#F5E6D0" opacity="0.55"/>
+                    <circle cx="270" cy="330" r="13" fill="#E8D8B8" opacity="0.6"/>
+                    <circle cx="262" cy="345" r="10" fill="#F5E6D0" opacity="0.5"/>
+                    
+                    <!-- Bottom fluff -->
+                    <circle cx="130" cy="410" r="12" fill="#E8D8B8" opacity="0.6"/>
+                    <circle cx="150" cy="418" r="10" fill="#F5E6D0" opacity="0.5"/>
+                    <circle cx="170" cy="420" r="13" fill="#E8D8B8" opacity="0.55"/>
+                    <circle cx="190" cy="418" r="10" fill="#F5E6D0" opacity="0.5"/>
+                    <circle cx="210" cy="410" r="12" fill="#E8D8B8" opacity="0.6"/>
+                    
+                    <!-- Top shoulder fluff -->
+                    <circle cx="100" cy="210" r="14" fill="#E8D8B8" opacity="0.7"/>
+                    <circle cx="115" cy="200" r="12" fill="#F5E6D0" opacity="0.6"/>
+                    <circle cx="130" cy="195" r="11" fill="#E8D8B8" opacity="0.55"/>
+                    <circle cx="210" cy="195" r="11" fill="#E8D8B8" opacity="0.55"/>
+                    <circle cx="225" cy="200" r="12" fill="#F5E6D0" opacity="0.6"/>
+                    <circle cx="240" cy="210" r="14" fill="#E8D8B8" opacity="0.7"/>
+                    
+                    <!-- Fur texture overlay - left side (more layers) -->
+                    <path d="M 85 250 Q 98 238, 112 255" fill="none" stroke="#E8D8B8" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+                    <path d="M 78 275 Q 92 263, 106 280" fill="none" stroke="#E8D8B8" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+                    <path d="M 75 300 Q 88 288, 102 305" fill="none" stroke="#E8D8B8" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+                    <path d="M 78 325 Q 92 313, 106 330" fill="none" stroke="#E8D8B8" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+                    <path d="M 85 350 Q 98 338, 112 355" fill="none" stroke="#E8D8B8" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+                    <!-- Extra wispy fur left -->
+                    <path d="M 72 260 Q 80 248, 92 262" fill="none" stroke="#F5E6D0" stroke-width="2" opacity="0.35" stroke-linecap="round"/>
+                    <path d="M 68 290 Q 76 278, 88 292" fill="none" stroke="#F5E6D0" stroke-width="2" opacity="0.35" stroke-linecap="round"/>
+                    <path d="M 70 320 Q 78 308, 90 322" fill="none" stroke="#F5E6D0" stroke-width="2" opacity="0.35" stroke-linecap="round"/>
+                    <path d="M 75 340 Q 83 328, 95 342" fill="none" stroke="#F5E6D0" stroke-width="2" opacity="0.3" stroke-linecap="round"/>
+                    
+                    <!-- Fur texture overlay - right side (more layers) -->
+                    <path d="M 255 250 Q 242 238, 228 255" fill="none" stroke="#E8D8B8" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+                    <path d="M 262 275 Q 248 263, 234 280" fill="none" stroke="#E8D8B8" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+                    <path d="M 265 300 Q 252 288, 238 305" fill="none" stroke="#E8D8B8" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+                    <path d="M 262 325 Q 248 313, 234 330" fill="none" stroke="#E8D8B8" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+                    <path d="M 255 350 Q 242 338, 228 355" fill="none" stroke="#E8D8B8" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+                    <!-- Extra wispy fur right -->
+                    <path d="M 268 260 Q 260 248, 248 262" fill="none" stroke="#F5E6D0" stroke-width="2" opacity="0.35" stroke-linecap="round"/>
+                    <path d="M 272 290 Q 264 278, 252 292" fill="none" stroke="#F5E6D0" stroke-width="2" opacity="0.35" stroke-linecap="round"/>
+                    <path d="M 270 320 Q 262 308, 250 322" fill="none" stroke="#F5E6D0" stroke-width="2" opacity="0.35" stroke-linecap="round"/>
+                    <path d="M 265 340 Q 257 328, 245 342" fill="none" stroke="#F5E6D0" stroke-width="2" opacity="0.3" stroke-linecap="round"/>
+                    
+                    <!-- Belly area (cloud white) - larger and softer -->
+                    <ellipse cx="170" cy="320" rx="80" ry="85" fill="#F5E6D0" opacity="0.85">
+                        <animate attributeName="ry" values="85;90;85" dur="3s" repeatCount="indefinite"/>
+                    </ellipse>
+                    
+                    <!-- Belly fur details -->
+                    <path d="M 135 305 Q 148 298, 162 310" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.5" stroke-linecap="round"/>
+                    <path d="M 178 305 Q 192 298, 205 310" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.5" stroke-linecap="round"/>
+                    <path d="M 145 330 Q 158 323, 172 335" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.5" stroke-linecap="round"/>
+                    <path d="M 180 330 Q 194 323, 208 335" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.5" stroke-linecap="round"/>
+                    <path d="M 155 355 Q 165 348, 175 355" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.4" stroke-linecap="round"/>
+                </g>
+                
+                <!-- POUCH (hidden half-moon opening) -->
+                <g id="pouch" opacity="0" style="transition: opacity 0.5s ease;">
+                    <!-- Pouch opening -->
+                    <path d="M 165 320 Q 200 300, 235 320 Q 200 340, 165 320" fill="#F5E6D0" stroke="#C9A86C" stroke-width="2"/>
+                    <!-- Golden lining -->
+                    <path d="M 170 325 Q 200 308, 230 325 Q 200 338, 170 325" fill="url(#pouchGradient)" opacity="0.7"/>
+                </g>
+                
+                <!-- ARMS (slightly longer than legs, can grasp) -->
+                <g id="arms" filter="url(#dropShadow)">
+                    <!-- Left arm -->
+                    <path d="M 80 250 Q 55 270, 40 310 Q 35 325, 45 330 Q 55 335, 65 320 Q 75 295, 85 265" 
+                          fill="#F5E6D0" stroke="#E8D8B8" stroke-width="1"/>
+                    <!-- Arm fur -->
+                    <path d="M 50 290 Q 45 295, 48 300" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.5"/>
+                    <!-- Left paw pad (copper) -->
+                    <circle cx="55" cy="325" r="10" fill="#C9A86C" opacity="0.8"/>
+                    <circle cx="50" cy="320" r="4" fill="#B89450" opacity="0.6"/>
+                    
+                    <!-- Right arm -->
+                    <path d="M 260 250 Q 285 270, 300 310 Q 305 325, 295 330 Q 285 335, 275 320 Q 265 295, 255 265" 
+                          fill="#F5E6D0" stroke="#E8D8B8" stroke-width="1"/>
+                    <!-- Arm fur -->
+                    <path d="M 290 290 Q 295 295, 292 300" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.5"/>
+                    <!-- Right paw pad (copper) -->
+                    <circle cx="285" cy="325" r="10" fill="#C9A86C" opacity="0.8"/>
+                    <circle cx="290" cy="320" r="4" fill="#B89450" opacity="0.6"/>
+                </g>
+                
+                <!-- HEAD (more fluffy, centered at x=170) -->
+                <g id="head" filter="url(#dropShadow)">
+                    <!-- Outer fur halo -->
+                    <ellipse cx="170" cy="175" rx="95" ry="80" fill="#E8D8B8" opacity="0.25"/>
+                    
+                    <!-- Main head shape (slightly flattened oval) -->
+                    <ellipse cx="170" cy="175" rx="85" ry="70" fill="#C9A86C"/>
+                    
+                    <!-- Cheek mane - MORE FLUFFY outward -->
+                    <!-- Left cheek mane (larger, more layers) -->
+                    <circle cx="80" cy="185" r="28" fill="#E8D8B8" opacity="0.85"/>
+                    <circle cx="68" cy="198" r="22" fill="#F5E6D0" opacity="0.75"/>
+                    <circle cx="72" cy="172" r="20" fill="#E8D8B8" opacity="0.7"/>
+                    <circle cx="60" cy="210" r="16" fill="#F5E6D0" opacity="0.65"/>
+                    <circle cx="55" cy="185" r="14" fill="#E8D8B8" opacity="0.55"/>
+                    <circle cx="88" cy="208" r="12" fill="#F5E6D0" opacity="0.5"/>
+                    <!-- Extra wispy fur -->
+                    <path d="M 70 195 Q 65 200, 58 198" fill="none" stroke="#F5E6D0" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+                    <path d="M 75 175 Q 68 172, 62 175" fill="none" stroke="#E8D8B8" stroke-width="3" opacity="0.4" stroke-linecap="round"/>
+                    
+                    <!-- Right cheek mane (larger, more layers) -->
+                    <circle cx="260" cy="185" r="28" fill="#E8D8B8" opacity="0.85"/>
+                    <circle cx="272" cy="198" r="22" fill="#F5E6D0" opacity="0.75"/>
+                    <circle cx="268" cy="172" r="20" fill="#E8D8B8" opacity="0.7"/>
+                    <circle cx="280" cy="210" r="16" fill="#F5E6D0" opacity="0.65"/>
+                    <circle cx="285" cy="185" r="14" fill="#E8D8B8" opacity="0.55"/>
+                    <circle cx="252" cy="208" r="12" fill="#F5E6D0" opacity="0.5"/>
+                    <!-- Extra wispy fur -->
+                    <path d="M 270 195 Q 275 200, 282 198" fill="none" stroke="#F5E6D0" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+                    <path d="M 265 175 Q 272 172, 278 175" fill="none" stroke="#E8D8B8" stroke-width="3" opacity="0.4" stroke-linecap="round"/>
+                    
+                    <!-- Forehead fluff (plump, juvenile feature - MORE) -->
+                    <circle cx="170" cy="110" r="22" fill="#E8D8B8" opacity="0.85"/>
+                    <circle cx="142" cy="118" r="18" fill="#E8D8B8" opacity="0.75"/>
+                    <circle cx="198" cy="118" r="18" fill="#E8D8B8" opacity="0.75"/>
+                    <circle cx="155" cy="102" r="14" fill="#F5E6D0" opacity="0.65"/>
+                    <circle cx="185" cy="102" r="14" fill="#F5E6D0" opacity="0.65"/>
+                    <circle cx="170" cy="95" r="12" fill="#F5E6D0" opacity="0.55"/>
+                    <circle cx="125" cy="125" r="12" fill="#E8D8B8" opacity="0.6"/>
+                    <circle cx="215" cy="125" r="12" fill="#E8D8B8" opacity="0.6"/>
+                    <!-- Forehead wispy fur -->
+                    <path d="M 155 115 Q 148 110, 142 115" fill="none" stroke="#F5E6D0" stroke-width="2.5" opacity="0.4" stroke-linecap="round"/>
+                    <path d="M 185 115 Q 192 110, 198 115" fill="none" stroke="#F5E6D0" stroke-width="2.5" opacity="0.4" stroke-linecap="round"/>
+                    <path d="M 165 105 Q 160 98, 165 92" fill="none" stroke="#F5E6D0" stroke-width="2.5" opacity="0.4" stroke-linecap="round"/>
+                    <path d="M 175 105 Q 180 98, 175 92" fill="none" stroke="#F5E6D0" stroke-width="2.5" opacity="0.4" stroke-linecap="round"/>
+                </g>
+                
+                <!-- EARS (semi-circular, medium size, very fluffy) -->
+                <g id="ears" filter="url(#softGlow)">
+                    <!-- Left ear -->
+                    <path d="M 100 135 C 88 100, 100 80, 120 85 C 140 90, 140 115, 128 135" 
+                          fill="#C9A86C"/>
+                    <!-- Inner ear -->
+                    <path d="M 105 132 C 96 108, 104 94, 118 98 C 132 102, 132 120, 122 132" 
+                          fill="#C9A86C" opacity="0.8"/>
+                    <path d="M 110 128 C 104 114, 110 104, 118 107 C 126 110, 126 122, 118 128" 
+                          fill="#F5E6D0" opacity="0.9"/>
+                    <!-- Ear edge fluff (more prominent) -->
+                    <circle cx="92" cy="118" r="7" fill="#F5E6D0" opacity="0.85"/>
+                    <circle cx="96" cy="105" r="6" fill="#F5E6D0" opacity="0.75"/>
+                    <circle cx="105" cy="92" r="5" fill="#F5E6D0" opacity="0.65"/>
+                    <circle cx="115" cy="88" r="4" fill="#E8D8B8" opacity="0.55"/>
+                    <!-- Ear rim glow -->
+                    <path d="M 95 120 C 88 105, 95 90, 110 85" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.3" stroke-linecap="round"/>
+                    
+                    <!-- Right ear -->
+                    <path d="M 240 135 C 252 100, 240 80, 220 85 C 200 90, 200 115, 212 135" 
+                          fill="#C9A86C"/>
+                    <!-- Inner ear -->
+                    <path d="M 235 132 C 244 108, 236 94, 222 98 C 208 102, 208 120, 218 132" 
+                          fill="#C9A86C" opacity="0.8"/>
+                    <path d="M 230 128 C 236 114, 230 104, 222 107 C 214 110, 214 122, 222 128" 
+                          fill="#F5E6D0" opacity="0.9"/>
+                    <!-- Ear edge fluff (more prominent) -->
+                    <circle cx="248" cy="118" r="7" fill="#F5E6D0" opacity="0.85"/>
+                    <circle cx="244" cy="105" r="6" fill="#F5E6D0" opacity="0.75"/>
+                    <circle cx="235" cy="92" r="5" fill="#F5E6D0" opacity="0.65"/>
+                    <circle cx="225" cy="88" r="4" fill="#E8D8B8" opacity="0.55"/>
+                    <!-- Ear rim glow -->
+                    <path d="M 245 120 C 252 105, 245 90, 230 85" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.3" stroke-linecap="round"/>
+                </g>
+                
+                <!-- FACE -->
+                <g id="face">
+                    <!-- EYES (large, round, juvenile proportion ~1/5 of face, droopy corners) -->
+                    <g id="eyes">
+                        <!-- Left eye -->
+                        <circle cx="125" cy="182" r="32" fill="url(#eyeGradient)"/>
+                        <!-- Eye shadow (bottom) for depth -->
+                        <path d="M 98 190 Q 125 210, 152 190" fill="none" stroke="#B89450" stroke-width="3" opacity="0.2"/>
+                        <!-- Left pupil (amber honey) -->
+                        <circle cx="125" cy="182" r="22" fill="url(#pupilGradient)" id="pupil-left" style="transition: all 0.3s ease;"/>
+                        <!-- Left eye highlights (dual highlight - larger and brighter) -->
+                        <circle cx="116" cy="173" r="9" fill="white" opacity="0.95"/>
+                        <circle cx="134" cy="188" r="5" fill="white" opacity="0.9"/>
+                        <circle cx="120" cy="190" r="3" fill="white" opacity="0.6"/>
+                        <!-- Eye lid line (droopy for innocent look - corners point down) -->
+                        <path d="M 95 180 Q 110 170, 125 175 Q 140 170, 155 180" fill="none" stroke="#8B6B5A" stroke-width="2.5" opacity="0.5"/>
+                        <!-- Bottom eyelid (subtle) -->
+                        <path d="M 100 195 Q 125 208, 150 195" fill="none" stroke="#C9A86C" stroke-width="1.5" opacity="0.3"/>
+                        <!-- Tear line (watery look) -->
+                        <path d="M 100 178 Q 105 185, 100 192" fill="none" stroke="white" stroke-width="2" opacity="0.4" stroke-linecap="round"/>
+                        
+                        <!-- Right eye -->
+                        <circle cx="215" cy="182" r="32" fill="url(#eyeGradient)"/>
+                        <!-- Eye shadow (bottom) for depth -->
+                        <path d="M 188 190 Q 215 210, 242 190" fill="none" stroke="#B89450" stroke-width="3" opacity="0.2"/>
+                        <!-- Right pupil (amber honey) -->
+                        <circle cx="215" cy="182" r="22" fill="url(#pupilGradient)" id="pupil-right" style="transition: all 0.3s ease;"/>
+                        <!-- Right eye highlights (dual highlight - larger and brighter) -->
+                        <circle cx="206" cy="173" r="9" fill="white" opacity="0.95"/>
+                        <circle cx="224" cy="188" r="5" fill="white" opacity="0.9"/>
+                        <circle cx="210" cy="190" r="3" fill="white" opacity="0.6"/>
+                        <!-- Eye lid line (droopy for innocent look - corners point down) -->
+                        <path d="M 185 180 Q 200 170, 215 175 Q 230 170, 245 180" fill="none" stroke="#8B6B5A" stroke-width="2.5" opacity="0.5"/>
+                        <!-- Bottom eyelid (subtle) -->
+                        <path d="M 190 195 Q 215 208, 240 195" fill="none" stroke="#C9A86C" stroke-width="1.5" opacity="0.3"/>
+                        <!-- Tear line (watery look) -->
+                        <path d="M 240 178 Q 235 185, 240 192" fill="none" stroke="white" stroke-width="2" opacity="0.4" stroke-linecap="round"/>
+                    </g>
+                    
+                    <!-- CHEEKS (ancient coin pattern - 方孔圆钱) -->
+                    <g id="cheeks">
+                        <!-- Left cheek (五铢钱 simplified) -->
+                        <circle cx="102" cy="205" r="18" fill="#C9A86C" opacity="0.45"/>
+                        <!-- Square hole in center -->
+                        <rect x="97" y="200" width="10" height="10" fill="#F5E6D0" opacity="0.85" rx="1"/>
+                        <!-- Subtle coin pattern lines -->
+                        <line x1="102" y1="200" x2="102" y2="210" stroke="#B89450" stroke-width="1" opacity="0.5"/>
+                        <line x1="97" y1="205" x2="107" y2="205" stroke="#B89450" stroke-width="1" opacity="0.5"/>
+                        
+                        <!-- Right cheek (开元通宝 simplified) -->
+                        <circle cx="238" cy="205" r="18" fill="#C9A86C" opacity="0.45"/>
+                        <!-- Square hole in center -->
+                        <rect x="233" y="200" width="10" height="10" fill="#F5E6D0" opacity="0.85" rx="1"/>
+                        <!-- Subtle coin pattern lines -->
+                        <line x1="238" y1="200" x2="238" y2="210" stroke="#B89450" stroke-width="1" opacity="0.5"/>
+                        <line x1="233" y1="205" x2="243" y2="205" stroke="#B89450" stroke-width="1" opacity="0.5"/>
+                    </g>
+                    
+                    <!-- NOSE (small inverted triangle, black, slightly moist) -->
+                    <path d="M 163 212 L 177 212 L 170 226 Z" fill="#1A1A1A" opacity="0.95"/>
+                    <!-- Nose moisture shine -->
+                    <ellipse cx="166" cy="216" rx="3" ry="2" fill="white" opacity="0.4"/>
+                    
+                    <!-- MOUTH (W shape smile, hidden in fluffy white cheek fur) -->
+                    <path d="M 152 230 Q 158 224, 164 230 Q 170 224, 176 230 Q 182 224, 188 230" 
+                          fill="none" stroke="#8B6B5A" stroke-width="2.5" stroke-linecap="round"/>
+                    <!-- Mouth corners -->
+                    <circle cx="152" cy="230" r="2" fill="#8B6B5A" opacity="0.6"/>
+                    <circle cx="188" cy="230" r="2" fill="#8B6B5A" opacity="0.6"/>
+                </g>
+            </svg>
+        </div>
+
+        <!-- Mood Indicator -->
+        <div class="mood-indicator" id="moodText">当前状态: 平静</div>
+
+        <!-- Interactive Controls -->
+        <div class="controls">
+            <button class="btn" onclick="setMood('happy')">记账成功 ⭐</button>
+            <button class="btn" onclick="setMood('anxious')">超支提醒 ❗</button>
+            <button class="btn" onclick="setMood('curious')">数据分析 ❓</button>
+            <button class="btn" onclick="setMood('comfort')">陪伴安慰 ♥</button>
+            <button class="btn" onclick="setMood('praise')">收到赞扬</button>
+            <button class="btn" onclick="setMood('sleep')">夜间休眠</button>
+            <button class="btn" onclick="togglePouch()">打开育儿袋</button>
+        </div>
+
+        <!-- Info Cards -->
+        <div class="info-section">
+            <div class="info-card">
+                <h3>配色体系</h3>
+                <div class="color-palette">
+                    <div class="color-swatch">
+                        <div class="swatch" style="background: #C9A86C;"></div>
+                        <span class="swatch-label">暖绒金<br>主色</span>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="swatch" style="background: #F5E6D0;"></div>
+                        <span class="swatch-label">云朵白<br>辅色</span>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="swatch" style="background: #C9A86C; opacity: 0.7;"></div>
+                        <span class="swatch-label">古币铜<br>点缀</span>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="swatch" style="background: #C9A86C;"></div>
+                        <span class="swatch-label">琥珀蜜<br>瞳孔</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3>核心特征</h3>
+                <p>
+                    • 梨形身体，重心低，约12-15厘米高<br>
+                    • 银杏叶形状的银色龙角<br>
+                    • 斐波那契螺旋尾（3.5圈）<br>
+                    • 方孔圆钱腮红印记<br>
+                    • 育儿袋（珍贵记忆仓库）
+                </p>
+            </div>
+
+            <div class="info-card">
+                <h3>瞳孔变形机制</h3>
+                <p>
+                    开心 → ⭐ 四角星<br>
+                    超支 → ❗ 感叹号<br>
+                    好奇 → ❓ 问号<br>
+                    安慰 → ♥ 爱心
+                </p>
+            </div>
+
+            <div class="info-card">
+                <h3>尾巴动效</h3>
+                <p>
+                    放松 → 缓慢旋转（2圈/分钟）<br>
+                    开心 → 加速+金色粒子<br>
+                    焦虑 → 逆时针旋转+振动<br>
+                    赞扬 → 感叹号形状<br>
+                    休眠 → 收紧包裹身体
+                </p>
+            </div>
+        </div>
+
+        <!-- Background Story -->
+        <div class="story-section">
+            <h2>背景故事</h2>
+            <div class="story-item">
+                <h4>诞生于昆仑墟</h4>
+                <p>貔貅一族的幼崽，由"人类对珍贵之物的强烈执念"凝聚成型。出生在宝藏洞天，那里堆积着人类历史上所有被遗忘的珍贵之物。</p>
+            </div>
+            <div class="story-item">
+                <h4>独特的选择</h4>
+                <p>在幼崽试炼中，当其他小貔貅选择金币、珍珠、宝石时，貅宝指着一枚刻有"平安"的铜板——唐朝农妇为戍边儿子祈福的刻字钱。</p>
+            </div>
+            <div class="story-item">
+                <h4>下凡的契机</h4>
+                <p>"你守护的不是财富，是什么？"长老的问题，貅宝回答："那个农妇把钱看得比钱更重。我想搞懂它。"于是被特许下凡人间寻找答案。</p>
+            </div>
+            <div class="story-item">
+                <h4>与用户的契约</h4>
+                <p>当用户记下第一笔账时，就是与貅宝签订"伙伴契约"。他会住进手机，守护每一笔收支背后的"情感价值"。当用户真正理解"富有不只是数字"的那一天，他的幼角会长大一圈。</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mood management
+        let currentMood = 'calm';
+
+        function setMood(mood) {
+            currentMood = mood;
+            const pupilLeft = document.getElementById('pupil-left');
+            const pupilRight = document.getElementById('pupil-right');
+            const tail = document.getElementById('tail');
+            const moodText = document.getElementById('moodText');
+
+            // Reset styles
+            [pupilLeft, pupilRight].forEach(p => {
+                p.setAttribute('r', '22');
+                p.style.clipPath = 'none';
+            });
+            
+            tail.style.transform = '';
+            tail.style.transition = '';
+            tail.style.animation = '';
+
+            // Remove particles
+            document.getElementById('particles').innerHTML = '';
+
+            switch (mood) {
+                case 'happy':
+                    // Star shape pupils
+                    [pupilLeft, pupilRight].forEach(p => {
+                        p.setAttribute('r', '20');
+                        p.style.clipPath = "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)";
+                    });
+                    tail.style.animation = 'tail-spin 8s linear infinite';
+                    moodText.textContent = '当前状态: 记账成功 ⭐';
+                    createParticles();
+                    break;
+                case 'anxious':
+                    // Exclamation mark pupils
+                    [pupilLeft, pupilRight].forEach(p => {
+                        p.setAttribute('r', '20');
+                        p.style.clipPath = "polygon(40% 15%, 60% 15%, 60% 55%, 65% 55%, 50% 85%, 35% 55%, 40% 55%)";
+                    });
+                    tail.style.animation = 'tail-reverse 3s linear infinite';
+                    moodText.textContent = '当前状态: 超支提醒 ❗';
+                    break;
+                case 'curious':
+                    // Question mark pupils
+                    [pupilLeft, pupilRight].forEach(p => {
+                        p.setAttribute('r', '20');
+                        p.style.clipPath = "circle(40% at 50% 35%), circle(10% at 50% 70%)";
+                    });
+                    moodText.textContent = '当前状态: 数据分析 ❓';
+                    break;
+                case 'comfort':
+                    // Heart shape pupils
+                    [pupilLeft, pupilRight].forEach(p => {
+                        p.setAttribute('r', '20');
+                        p.style.clipPath = "path('M 10 7 C 10 3, 14 0, 17 2 C 20 0, 24 3, 24 7 C 24 12, 17 16, 17 16 C 17 16, 10 12, 10 7 Z')";
+                    });
+                    moodText.textContent = '当前状态: 陪伴安慰 ♥';
+                    break;
+                case 'praise':
+                    tail.style.animation = 'tail-exclaim 1s ease-out';
+                    moodText.textContent = '当前状态: 收到赞扬 🎉';
+                    createParticles();
+                    // Reset tail after animation
+                    setTimeout(() => {
+                        tail.style.animation = 'tail-spin 12s linear infinite';
+                    }, 1000);
+                    break;
+                case 'sleep':
+                    tail.style.transform = 'translate(20px, -20px) rotate(-45deg)';
+                    tail.style.transition = 'transform 1s ease';
+                    moodText.textContent = '当前状态: 夜间休眠 💤';
+                    break;
+                default:
+                    tail.style.animation = 'tail-spin 12s linear infinite';
+                    moodText.textContent = '当前状态: 平静';
+            }
+        }
+
+        function togglePouch() {
+            const pouch = document.getElementById('pouch');
+            pouch.style.opacity = pouch.style.opacity === '1' ? '0' : '1';
+        }
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = (280 + Math.random() * 100) + 'px';
+                particle.style.top = (280 + Math.random() * 80) + 'px';
+                particle.style.animationDelay = (Math.random() * 0.8) + 's';
+                particle.style.background = Math.random() > 0.5 ? '#C9A86C' : '#FFD700';
+                particle.style.width = (3 + Math.random() * 4) + 'px';
+                particle.style.height = particle.style.width;
+                container.appendChild(particle);
+            }
+
+            // Remove particles after animation
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 2500);
+        }
+
+        // Initialize with calm state
+        window.onload = () => {
+            setMood('calm');
+        };
+
+        // Click interaction
+        const xiubao = document.querySelector('.xiubao');
+        let clickCount = 0;
+        
+        xiubao.addEventListener('click', () => {
+            clickCount++;
+            
+            if (clickCount >= 5) {
+                setMood('praise');
+                showSpeech('被你摸得角角都开心了~ ✨');
+                clickCount = 0;
+            } else {
+                const phrases = [
+                    '嗯？在叫我吗？',
+                    '要记账吗？我准备好啦！',
+                    '我的育儿袋里有很多回忆哦~',
+                    '嘿嘿，被夸角角了！'
+                ];
+                showSpeech(phrases[Math.min(clickCount - 1, phrases.length - 1)]);
+            }
+        });
+
+        function showSpeech(text) {
+            // Remove existing speech bubble
+            const existing = document.querySelector('.speech-bubble');
+            if (existing) existing.remove();
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'speech-bubble';
+            bubble.textContent = text;
+            bubble.style.cssText = `
+                position: absolute;
+                top: 10%;
+                left: 50%;
+                transform: translateX(-50%);
+                background: white;
+                padding: 12px 20px;
+                border-radius: 20px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                font-size: 14px;
+                color: #8B7D6B;
+                z-index: 10;
+                animation: bubble-appear 0.3s ease-out;
+            `;
+            
+            document.querySelector('.character-display').appendChild(bubble);
+            
+            setTimeout(() => {
+                bubble.remove();
+            }, 2500);
+        }
+
+        // Add bubble animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes bubble-appear {
+                from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+                to { opacity: 1; transform: translateX(-50%) translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
