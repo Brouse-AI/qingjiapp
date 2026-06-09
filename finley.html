@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>貅宝 Finley - 2D角色形象设定</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4A574;
+    --gold-warm: #C8956C;
+    --gold-deep: #B8845C;
+    --white: #FAF8F5;
+    --silver: #C0C0C8;
+    --silver-old: #A8A8B0;
+    --amber: #E8B84A;
+    --amber-deep: #9A6A18;
+    --copper: #B87333;
+    --bg: #FDF8F0;
+    --bg-card: #FFFBF5;
+    --text: #2C2420;
+    --text-light: #6B5C50;
+    --border: #E8DDD0;
+    --accent: #D4A574;
+    --shadow: rgba(180,140,100,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #FDF8F0 0%, #F5EBE0 40%, #EDE0CC 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 40px 20px;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    color: var(--gold-deep);
+    text-align: center;
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: var(--text-light);
+    text-align: center;
+    margin-bottom: 48px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+  }
+
+  .character-container {
+    position: relative;
+    width: 400px;
+    max-width: 90vw;
+  }
+
+  .hero-desc {
+    max-width: 500px;
+    text-align: center;
+    margin-top: 48px;
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+
+  .section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+
+  .section-title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 600;
+    color: var(--gold-deep);
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 4px 20px var(--shadow);
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gold-warm);
+    margin-bottom: 12px;
+  }
+
+  .card p, .card li {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    line-height: 1.8;
+  }
+
+  .card ul { list-style: none; padding: 0; }
+
+  .card ul li {
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--text-light);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 640px) {
+    .section { padding: 48px 16px; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<section class="hero">
+  <h1 class="hero-title">貅 宝</h1>
+  <p class="hero-subtitle">FINLEY · 2D角色形象完整设定</p>
+  <p class="hero-desc">小熊猫的蓬松体态 + 柯基犬的短圆身材 + 幼熊的憨态。二头身，梨形/水滴形，暖绒金色与云朵白色的温柔融合。</p>
+</section>
+<div class="divider"></div>
+<section class="section">
+  <h2 class="section-title">一、整体轮廓与身形</h2>
+  <div class="card-grid">
+    <div class="card"><h3 class="card-title">物种融合</h3><ul><li>小熊猫的蓬松体态</li><li>柯基犬的短圆身材</li><li>幼熊的憨态可掬</li></ul></div>
+    <div class="card"><h3 class="card-title">身形比例</h3><ul><li><strong>二头身</strong>：头部与身体长度相当</li><li>梨形/水滴形：上半身略窄，腰腹以下圆润宽大</li></ul></div>
+    <div class="card"><h3 class="card-title">体量感</h3><ul><li>约一个成年人手掌大小（12-15厘米）</li><li>像刚出炉的蓬松黄油面包</li></ul></div>
+    <div class="card"><h3 class="card-title">毛发质感</h3><ul><li>全身覆盖厚实蓬松的绒毛</li><li>参考安哥拉兔毛：长而直、有层次感但不卷曲</li></ul></div>
+  </div>
+</section>
+<div class="divider"></div>
+<section class="section">
+  <h2 class="section-title">二、头部与面部</h2>
+  <div class="card-grid">
+    <div class="card"><h3 class="card-title">耳朵</h3><ul><li>半圆形，约占头高的1/3</li><li>头顶两侧偏下，微微向外张开</li></ul></div>
+    <div class="card"><h3 class="card-title">眼睛</h3><ul><li>大而圆的杏仁形，眼角微微下垂</li><li>瞳孔可变形：星形、问号、感叹号、心形、圆形</li></ul></div>
+    <div class="card"><h3 class="card-title">腮红</h3><ul><li>中国古代方孔圆钱图案</li><li>颜色：古币铜色，半透明晕染感</li></ul></div>
+  </div>
+</section>
+<div class="divider"></div>
+<section class="section">
+  <h2 class="section-title">三、身体细节</h2>
+  <div class="card-grid">
+    <div class="card"><h3 class="card-title">龙角</h3><ul><li>头顶正上方两侧，从金色毛发中探出</li><li>银杏叶形状的小角</li><li>质感：温润的哑光银</li></ul></div>
+    <div class="card"><h3 class="card-title">螺旋尾</h3><ul><li>末端卷曲成完美的黄金螺旋</li><li>螺旋共3.5圈，顺时针方向卷曲</li><li>螺旋中心有一个极小的金色星形亮点</li></ul></div>
+    <div class="card"><h3 class="card-title">育儿袋</h3><ul><li>腹部正中央，白色绒毛区域</li><li>可掏出小算盘、记忆星、泡泡棒等道具</li></ul></div>
+  </div>
+</section>
+<div class="divider"></div>
+<section class="section">
+  <h2 class="section-title">四、配色方案</h2>
+  <div class="card-grid">
+    <div class="card"><h3 class="card-title">暖绒金色 #D4A574</h3><p>主色调</p></div>
+    <div class="card"><h3 class="card-title">云朵白色 #FAF8F5</h3><p>腹部、脸部</p></div>
+    <div class="card"><h3 class="card-title">琥珀蜜色 #E8B84A</h3><p>瞳孔底色</p></div>
+    <div class="card"><h3 class="card-title">古币铜色 #B87333</h3><p>腮红、肉垫</p></div>
+    <div class="card"><h3 class="card-title">哑光银 #C0C0C8</h3><p>龙角质感</p></div>
+    <div class="card"><h3 class="card-title">深棕黑 #2C2420</h3><p>鼻子、描边</p></div>
+  </div>
+</section>
+<footer class="footer"><p>貅宝 Finley - 轻记账 AI 陪伴角色</p></footer>
+</body>
+</html>
