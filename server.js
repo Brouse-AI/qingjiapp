@@ -3,8 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 http.createServer((req, res) => {
-  let url = req.url === '/' ? '/index.html' : req.url.split('?')[0];
-  // 根据扩展名返回正确 MIME
+  let url = req.url === '/' ? '/accounting-app.html' : req.url.split('?')[0];
   const mime = {
     '.html': 'text/html; charset=utf-8',
     '.css': 'text/css; charset=utf-8',

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>小青帐 · 轻记账</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ========== 主题变量系统 ========== */
+:root { --primary:#5DBFAE; --primary-dark:#3F9D8D; --primary-light:#E8F5F2; --accent:#FF8A65;
+  --bg:#F5F9F8; --card-bg:#FFFFFF; --text:#2D3A3A; --text-secondary:#5C7070;
+  --text-muted:#9DB0B0; --divider:#E5EBE9; --input-bg:#F0F5F3;
+  --expense:#FF6B6B; --income:#5DBFAE; --warning:#FFB74D; --danger:#E57373;
+  --shadow:0 2px 12px rgba(93,191,174,0.08); --radius:14px; }
+body[data-theme="micro"] { --primary:#5C6BC0; --primary-dark:#3F51B5; --primary-light:#E8EAF6;
+  --bg:#F5F6FA; --card-bg:#F5F6FA; --text:#2A2E38; --text-secondary:#5A5F6B;
+  --text-muted:#9AA0AD; --divider:#D9DBE0; --input-bg:#FFFFFF;
+  --shadow:4px 4px 10px #C7CBD4, -4px -4px 10px #FFFFFF; }
+body[data-theme="micro"] .card,body[data-theme="micro"] .input,body[data-theme="micro"] .cat-item{box-shadow:var(--shadow);border:none;}
+body[data-theme="glass"] { --primary:#64B5F6; --primary-dark:#1976D2; --primary-light:rgba(100,181,246,0.15);
+  --bg:linear-gradient(135deg,#4DD0E1 0%,#7E57C2 100%); --card-bg:rgba(255,255,255,0.25);
+  --text:#FFFFFF; --text-secondary:rgba(255,255,255,0.85); --text-muted:rgba(255,255,255,0.6);
+  --divider:rgba(255,255,255,0.2); --input-bg:rgba(255,255,255,0.2);
+  --expense:#FFCDD2; --income:#B2DFDB; --warning:#FFE082;
+  --shadow:0 2px 12px rgba(0,0,0,0.15); }
+body[data-theme="glass"]{min-height:100vh;background:var(--bg);}
+body[data-theme="glass"] .card{background:rgba(255,255,255,0.22);border:1px solid rgba(255,255,255,0.3);}
+body[data-theme="glass"] .input{color:#fff;}
+body[data-theme="glass"] .nav-bar{background:rgba(255,255,255,0.22);border-top:1px solid rgba(255,255,255,0.25);}
+body[data-theme="white"]{--primary:#2D2D2D;--primary-dark:#1A1A1A;--primary-light:#F5F5F5;
+  --bg:#FFFFFF;--card-bg:#FFFFFF;--text:#1A1A1A;--text-secondary:#666;
+  --text-muted:#B0B0B0;--divider:#EEEEEE;--input-bg:#F8F8F8;--shadow:0 1px 3px rgba(0,0,0,0.04);--radius:10px;}
+body[data-theme="dark"]{--primary:#4DB6AC;--primary-dark:#26A69A;--primary-light:rgba(77,182,172,0.15);
+  --bg:#121418;--card-bg:#1A1D23;--text:#E8EAED;--text-secondary:#9AA0A6;
+  --text-muted:#5F6368;--divider:#2A2D33;--input-bg:#22262E;
+  --expense:#EF9A9A;--income:#80CBC4;--warning:#FFCC80;--shadow:0 2px 8px rgba(0,0,0,0.4);}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+.app{max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:72px;position:relative;}
+.top-bar{padding:16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg);z-index:10;}
+.top-title{font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--primary);}
+.top-actions{display:flex;gap:4px;}
+.icon-btn{background:none;border:none;font-size:18px;padding:6px 10px;cursor:pointer;color:var(--text);border-radius:8px;}
+.icon-btn:hover{background:var(--primary-light);}
+.card{background:var(--card-bg);border-radius:var(--radius);padding:16px;margin:10px 12px;box-shadow:var(--shadow);}
+.input{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--divider);
+  background:var(--input-bg);font-size:14px;color:var(--text);font-family:inherit;outline:none;transition:border-color 0.2s;}
+.input:focus{border-color:var(--primary);background:var(--card-bg);}
+.input-sm{padding:8px 10px;font-size:13px;}
+.btn{padding:10px 20px;border-radius:10px;border:none;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:inherit;}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-primary:hover{background:var(--primary-dark);}
+.btn-outline{background:transparent;border:1.5px solid var(--primary);color:var(--primary);}
+.btn-ghost{background:var(--primary-light);color:var(--primary);}
+.btn-danger{background:var(--danger);color:#fff;}
+.btn-full{width:100%;padding:14px;font-size:15px;}
+.type-switcher{position:relative;display:flex;background:var(--input-bg);border-radius:12px;padding:4px;margin:8px 12px;}
+.type-btn{flex:1;padding:10px 0;text-align:center;font-size:14px;font-weight:600;cursor:pointer;border-radius:8px;color:var(--text-muted);transition:all 0.3s;position:relative;z-index:1;}
+.type-btn.active.expense{color:var(--expense);}
+.type-btn.active.income{color:var(--income);}
+.type-indicator{position:absolute;top:4px;bottom:4px;width:50%;background:var(--card-bg);border-radius:8px;transition:left 0.3s;box-shadow:0 2px 6px rgba(0,0,0,0.06);}
+body[data-theme="glass"] .type-indicator{background:rgba(255,255,255,0.3);}
+.amount-area{text-align:center;padding:16px;margin:0 12px 10px;background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);}
+.amount-row{display:flex;align-items:center;justify-content:center;gap:6px;}
+.amount-symbol{font-size:28px;font-weight:700;color:var(--primary);}
+.amount-input{font-size:40px;font-weight:700;color:var(--text);text-align:center;background:transparent;border:none;outline:none;width:200px;font-family:inherit;}
+.amount-input::placeholder{color:var(--text-muted);font-weight:500;}
+.amount-label{font-size:13px;color:var(--text-muted);margin-top:4px;}
+.cat-scroll{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.cat-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:10px;cursor:pointer;transition:all 0.2s;border:1.5px solid transparent;background:var(--card-bg);}
+.cat-item:hover{background:var(--primary-light);}
+.cat-item.active{background:var(--primary);border-color:var(--primary);color:#fff;transform:scale(0.96);}
+.cat-item .cat-icon{font-size:24px;line-height:1;}
+.cat-item .cat-name{font-size:12px;font-weight:500;color:inherit;}
+.cat-item.active .cat-name{color:#fff;}
+.cat-toolbar{display:flex;justify-content:space-between;margin-bottom:10px;align-items:center;}
+.cat-toolbar .label{font-size:13px;color:var(--text-muted);}
+.cat-toolbar .add-btn{background:none;border:none;color:var(--primary);font-size:13px;cursor:pointer;font-weight:600;}
+.subcat-scroll{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.subcat-chip{padding:6px 12px;background:var(--input-bg);border-radius:16px;font-size:12px;cursor:pointer;border:1.5px solid transparent;color:var(--text-secondary);}
+.subcat-chip.active{background:var(--primary);color:#fff;}
+.date-area{margin:10px 12px;background:var(--card-bg);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);}
+.date-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.date-btn{padding:8px 14px;background:var(--input-bg);border:none;border-radius:20px;font-size:13px;cursor:pointer;color:var(--text-secondary);font-family:inherit;}
+.date-btn.active{background:var(--primary);color:#fff;}
+.date-input-row{display:flex;gap:8px;align-items:center;}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;display:flex;background:var(--card-bg);padding:6px 0 8px;box-shadow:0 -2px 12px rgba(0,0,0,0.05);z-index:50;}
+.nav-item{flex:1;text-align:center;padding:6px 4px;cursor:pointer;color:var(--text-muted);font-size:11px;transition:all 0.2s;}
+.nav-item .icon{font-size:22px;display:block;line-height:1;margin-bottom:2px;}
+.nav-item.active{color:var(--primary);font-weight:700;}
+.hidden{display:none!important;}
+.page{padding-bottom:20px;}
+.record-group-header{padding:12px 16px 4px;font-size:13px;color:var(--text-muted);font-weight:600;display:flex;justify-content:space-between;}
+.record-group-summary{font-size:12px;}
+.record-group-summary .expense{color:var(--expense);margin-right:8px;}
+.record-group-summary .income{color:var(--income);}
+.record-card{display:flex;align-items:center;padding:12px 14px;background:var(--card-bg);margin:4px 12px;border-radius:12px;box-shadow:var(--shadow);gap:12px;cursor:pointer;transition:all 0.2s;}
+.record-card:hover{transform:translateX(2px);}
+.record-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--primary-light);flex-shrink:0;}
+.record-info{flex:1;min-width:0;}
+.record-cat{font-size:14px;font-weight:600;color:var(--text);}
+.record-detail{font-size:12px;color:var(--text-muted);margin-top:2px;}
+.record-amount{font-size:16px;font-weight:700;margin-left:8px;flex-shrink:0;}
+.record-amount.expense{color:var(--expense);}
+.record-amount.income{color:var(--income);}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;}
+.stat-val{font-size:18px;font-weight:700;color:var(--text);}
+.stat-val.expense{color:var(--expense);}
+.stat-val.income{color:var(--income);}
+.stat-val.balance{color:var(--primary);}
+.stat-lbl{font-size:12px;color:var(--text-muted);margin-top:2px;}
+.chart-container{height:260px;position:relative;}
+.chart-card{padding:12px;margin:10px 12px;background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);}
+.user-card{display:flex;align-items:center;padding:18px;background:var(--card-bg);border-radius:var(--radius);margin:10px 12px;box-shadow:var(--shadow);}
+.user-avatar{width:52px;height:52px;border-radius:50%;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:26px;margin-right:12px;}
+.user-name{font-size:16px;font-weight:700;}
+.user-sub{font-size:12px;color:var(--text-muted);margin-top:2px;}
+.setting-section{margin:16px 12px;}
+.setting-section-title{font-size:13px;color:var(--text-muted);font-weight:600;padding:6px 8px;margin-bottom:4px;}
+.setting-item{display:flex;align-items:center;padding:14px 16px;background:var(--card-bg);border-radius:12px;margin-bottom:6px;box-shadow:var(--shadow);cursor:pointer;}
+.setting-item .label{font-size:15px;font-weight:600;color:var(--text);}
+.setting-item .desc{font-size:12px;color:var(--text-muted);margin-top:3px;line-height:1.5;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+</style>
+</head>
+<body data-theme="fresh">
+<div class="app" id="app">
+  <div class="top-bar">
+    <div class="top-title">
+      <span class="logo-dot"></span>
+      <span id="top-title-text">小青帐</span>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" onclick="App.openThemePicker()" title="主题">🎨</button>
+    </div>
+  </div>
+  <div id="page-record" class="page">
+    <div class="type-switcher">
+      <div class="type-indicator" id="type-indicator" style="left:0;"></div>
+      <div class="type-btn expense active" data-type="expense" onclick="App.switchType('expense')">支出</div>
+      <div class="type-btn income" data-type="income" onclick="App.switchType('income')">收入</div>
+    </div>
+    <div class="amount-area">
+      <div class="amount-row">
+        <span class="amount-symbol">¥</span>
+        <input type="number" class="amount-input" id="amount-input" placeholder="0.00" step="0.01" autofocus inputmode="decimal">
+      </div>
+      <div class="amount-label" id="quick-hint">点下方分类即可记账</div>
+    </div>
+    <div class="date-area">
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px;">📅 记账时间</div>
+      <div class="date-row" id="date-quick-btns">
+        <button class="date-btn active" data-offset="0" onclick="App.applyDateOffset(0,this)">今天</button>
+        <button class="date-btn" data-offset="-1" onclick="App.applyDateOffset(-1,this)">昨天</button>
+        <button class="date-btn" data-offset="-7" onclick="App.applyDateOffset(-7,this)">一周前</button>
+        <button class="date-btn" data-offset="-30" onclick="App.applyDateOffset(-30,this)">一月前</button>
+      </div>
+      <div class="date-input-row">
+        <input type="date" class="input input-sm" id="record-date">
+        <input type="time" class="input input-sm" id="record-time" style="flex:0 0 120px;">
+      </div>
+    </div>
+    <div class="card">
+      <div class="cat-toolbar">
+        <span class="label" id="cat-section-label">选择分类</span>
+        <button class="add-btn">＋ 管理</button>
+      </div>
+      <div class="cat-scroll" id="main-cat-list">
+        <div class="cat-item"><div class="cat-icon">🍜</div><div class="cat-name">餐饮</div></div>
+        <div class="cat-item"><div class="cat-icon">🚗</div><div class="cat-name">交通</div></div>
+        <div class="cat-item"><div class="cat-icon">🛒</div><div class="cat-name">购物</div></div>
+        <div class="cat-item"><div class="cat-icon">🏠</div><div class="cat-name">居家</div></div>
+        <div class="cat-item"><div class="cat-icon">🎮</div><div class="cat-name">娱乐</div></div>
+        <div class="cat-item"><div class="cat-icon">💊</div><div class="cat-name">医疗</div></div>
+        <div class="cat-item"><div class="cat-icon">📚</div><div class="cat-name">学习</div></div>
+        <div class="cat-item"><div class="cat-icon">✈️</div><div class="cat-name">旅行</div></div>
+        <div class="cat-item"><div class="cat-icon">💝</div><div class="cat-name">人情</div></div>
+        <div class="cat-item"><div class="cat-icon">📦</div><div class="cat-name">其他</div></div>
+      </div>
+    </div>
+    <div style="padding:12px;">
+      <button class="btn btn-primary btn-full" id="save-record-btn">保存记录</button>
+    </div>
+  </div>
+  <div id="page-list" class="page hidden">
+    <div class="search-bar" style="display:flex;gap:8px;padding:12px;background:var(--bg);">
+      <input type="text" class="input" placeholder="搜索..." style="flex:1;">
+      <button class="btn btn-ghost">筛选</button>
+    </div>
+    <div id="record-list-body"></div>
+  </div>
+  <div id="page-analysis" class="page hidden">
+    <div class="card">
+      <div class="stat-grid" id="analysis-stats">
+        <div><div class="stat-val expense">¥0.00</div><div class="stat-lbl">本月支出</div></div>
+        <div><div class="stat-val income">¥0.00</div><div class="stat-lbl">本月收入</div></div>
+        <div><div class="stat-val balance">¥0.00</div><div class="stat-lbl">结余</div></div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div style="font-size:14px;font-weight:700;margin-bottom:10px;">分类占比</div>
+      <div class="chart-container"><canvas id="pieChart"></canvas></div>
+    </div>
+  </div>
+  <div id="page-me" class="page hidden">
+    <div class="user-card">
+      <div class="user-avatar">🌿</div>
+      <div style="flex:1;">
+        <div class="user-name">我的小青帐</div>
+        <div class="user-sub">简约记账 · 轻享生活</div>
+      </div>
+    </div>
+    <div class="setting-section">
+      <div class="setting-section-title">数据</div>
+      <div class="setting-item"><div style="flex:1;"><div class="label">📤 导出数据</div><div class="desc">导出完整 JSON 备份</div></div></div>
+      <div class="setting-item"><div style="flex:1;"><div class="label">📥 导入数据</div><div class="desc">从 JSON 文件恢复</div></div></div>
+    </div>
+    <div style="text-align:center;padding:20px 0 30px;font-size:12px;color:var(--text-muted);">小青帐 v3.0 · 轻而不简</div>
+  </div>
+</div>
+<div class="nav-bar" id="nav-bar">
+  <div class="nav-item active" data-page="record" onclick="App.switchPage('record')"><span class="icon">✏️</span>记账</div>
+  <div class="nav-item" data-page="list" onclick="App.switchPage('list')"><span class="icon">📋</span>记录</div>
+  <div class="nav-item" data-page="analysis" onclick="App.switchPage('analysis')"><span class="icon">📊</span>分析</div>
+  <div class="nav-item" data-page="me" onclick="App.switchPage('me')"><span class="icon">👤</span>我的</div>
+</div>
+<script>
+window.App = {
+  switchPage: function(page) {
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.add('hidden'); });
+    document.getElementById('page-' + page).classList.remove('hidden');
+    document.querySelectorAll('.nav-item').forEach(function(item) {
+      item.classList.toggle('active', item.dataset.page === page);
+    });
+  },
+  switchType: function(type) {
+    var indicator = document.getElementById('type-indicator');
+    indicator.style.left = type === 'expense' ? '0' : '50%';
+    document.querySelectorAll('.type-btn').forEach(function(btn) {
+      btn.classList.toggle('active', btn.dataset.type === type);
+    });
+  },
+  applyDateOffset: function(offset, btn) {
+    document.querySelectorAll('.date-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+  },
+  openThemePicker: function() { alert('主题选择器 - 演示模式'); }
+};
+document.querySelectorAll('.cat-item').forEach(function(item, index) {
+  item.onclick = function() {
+    document.querySelectorAll('.cat-item').forEach(function(i) { i.classList.remove('active'); });
+    item.classList.add('active');
+    var amount = document.getElementById('amount-input').value;
+    if (amount && parseFloat(amount) > 0) {
+      alert('已记录 ¥' + amount + ' - ' + item.querySelector('.cat-name').textContent);
+    }
+  };
+});
+document.getElementById('save-record-btn').onclick = function() {
+  var amount = document.getElementById('amount-input').value;
+  if (!amount || parseFloat(amount) <= 0) { alert('请输入金额'); return; }
+  var activeCat = document.querySelector('.cat-item.active');
+  if (!activeCat) { alert('请选择分类'); return; }
+  alert('记账成功: ¥' + amount + ' - ' + activeCat.querySelector('.cat-name').textContent);
+};
+</script>
+</body>
+</html>
